@@ -20,6 +20,17 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@': path.resolve(__dirname, '.'),
       }
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
+            ui: ['lucide-react', 'react-icons'],
+            utils: ['axios', 'date-fns']
+          }
+        }
+      }
     }
   };
 });
