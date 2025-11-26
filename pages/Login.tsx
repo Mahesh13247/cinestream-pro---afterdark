@@ -32,9 +32,11 @@ const Login: React.FC = () => {
     };
 
     // Redirect if already authenticated
-    if (isAuthenticated) {
-        return <Navigate to="/" replace />;
-    }
+    useEffect(() => {
+        if (isAuthenticated) {
+            window.location.hash = '/';
+        }
+    }, [isAuthenticated]);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-red-900 to-black px-4">
