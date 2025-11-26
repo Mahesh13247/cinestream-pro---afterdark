@@ -109,34 +109,34 @@ const Watch = () => {
         <div className="min-h-screen bg-background">
             {/* Enhanced Header with Movie Info */}
             <div className="bg-surface/80 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
-                <div className="max-w-[1800px] mx-auto px-4 md:px-8 py-4">
-                    <div className="flex items-center justify-between gap-4">
+                <div className="max-w-[1800px] mx-auto px-4 md:px-8 py-3 md:py-4">
+                    <div className="flex items-center justify-between gap-3 md:gap-4">
                         {/* Left: Back Button & Movie Title */}
                         <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0">
                             <button
                                 onClick={() => navigate(-1)}
-                                className="flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-text hover:text-primary transition-all border border-white/10"
+                                className="flex-shrink-0 w-9 h-9 md:w-10 md:h-10 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-text hover:text-primary transition-all border border-white/10"
                                 aria-label="Go back"
                             >
-                                <ArrowLeft size={20} />
+                                <ArrowLeft size={18} className="md:w-5 md:h-5" />
                             </button>
                             <div className="min-w-0 flex-1">
-                                <h1 className="text-lg md:text-xl font-bold text-text truncate">
+                                <h1 className="text-base md:text-xl font-bold text-text truncate leading-tight">
                                     {movie.title || movie.name}
                                 </h1>
-                                <div className="flex items-center gap-3 text-xs md:text-sm text-text-muted">
+                                <div className="flex items-center gap-3 text-[10px] md:text-sm text-text-muted mt-0.5">
                                     <span className="flex items-center gap-1">
-                                        <Calendar size={14} />
+                                        <Calendar size={12} className="md:w-[14px] md:h-[14px]" />
                                         {new Date(movie.release_date || movie.first_air_date || '').getFullYear()}
                                     </span>
                                     {movie.runtime && (
                                         <span className="flex items-center gap-1">
-                                            <Clock size={14} />
+                                            <Clock size={12} className="md:w-[14px] md:h-[14px]" />
                                             {movie.runtime} min
                                         </span>
                                     )}
                                     <span className="flex items-center gap-1">
-                                        <Star size={14} className="fill-yellow-500 text-yellow-500" />
+                                        <Star size={12} className="md:w-[14px] md:h-[14px] fill-yellow-500 text-yellow-500" />
                                         {movie.vote_average.toFixed(1)}
                                     </span>
                                 </div>
@@ -146,7 +146,7 @@ const Watch = () => {
                         {/* Right: Details Button */}
                         <Link
                             to={`/movies/${movieId}`}
-                            className="flex-shrink-0 flex items-center gap-2 px-4 py-2.5 bg-white/90 dark:bg-white/10 text-gray-900 dark:text-white rounded-lg hover:bg-white dark:hover:bg-white/20 transition-all border border-black/10 dark:border-white/10 font-medium text-sm"
+                            className="flex-shrink-0 flex items-center gap-2 px-3 py-2 md:px-4 md:py-2.5 bg-white/90 dark:bg-white/10 text-gray-900 dark:text-white rounded-lg hover:bg-white dark:hover:bg-white/20 transition-all border border-black/10 dark:border-white/10 font-medium text-xs md:text-sm"
                         >
                             <Info size={16} />
                             <span className="hidden sm:inline">Details</span>
@@ -172,7 +172,7 @@ const Watch = () => {
                                     <button
                                         key={index}
                                         onClick={() => setSelectedServer(index)}
-                                        className={`px-4 py-2.5 rounded-lg text-sm font-medium transition-all ${selectedServer === index
+                                        className={`px-3 py-2 md:px-4 md:py-2.5 rounded-lg text-xs md:text-sm font-medium transition-all flex-1 sm:flex-none whitespace-nowrap ${selectedServer === index
                                             ? 'bg-primary text-black shadow-lg shadow-primary/20 scale-105'
                                             : 'bg-white/5 text-text hover:bg-white/10 border border-white/10 hover:border-white/20'
                                             }`}
@@ -256,23 +256,23 @@ const Watch = () => {
                     </h2>
                     <p className="text-text-muted leading-relaxed mb-6 text-base">{movie.overview}</p>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                            <div className="flex items-center gap-2 text-text-muted text-sm mb-1">
-                                <Star size={16} className="text-yellow-500" />
+                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+                        <div className="bg-white/5 rounded-xl p-3 md:p-4 border border-white/10">
+                            <div className="flex items-center gap-2 text-text-muted text-xs md:text-sm mb-1">
+                                <Star size={14} className="text-yellow-500 md:w-4 md:h-4" />
                                 <span>Rating</span>
                             </div>
-                            <p className="text-text font-bold text-xl">
-                                {movie.vote_average.toFixed(1)}<span className="text-text-muted text-base font-normal">/10</span>
+                            <p className="text-text font-bold text-lg md:text-xl">
+                                {movie.vote_average.toFixed(1)}<span className="text-text-muted text-sm md:text-base font-normal">/10</span>
                             </p>
                         </div>
 
-                        <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                            <div className="flex items-center gap-2 text-text-muted text-sm mb-1">
-                                <Calendar size={16} />
+                        <div className="bg-white/5 rounded-xl p-3 md:p-4 border border-white/10">
+                            <div className="flex items-center gap-2 text-text-muted text-xs md:text-sm mb-1">
+                                <Calendar size={14} className="md:w-4 md:h-4" />
                                 <span>Release Date</span>
                             </div>
-                            <p className="text-text font-bold text-lg">
+                            <p className="text-text font-bold text-base md:text-lg truncate">
                                 {new Date(movie.release_date || movie.first_air_date || '').toLocaleDateString('en-US', {
                                     year: 'numeric',
                                     month: 'short',
@@ -282,20 +282,20 @@ const Watch = () => {
                         </div>
 
                         {movie.runtime && (
-                            <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                                <div className="flex items-center gap-2 text-text-muted text-sm mb-1">
-                                    <Clock size={16} />
+                            <div className="bg-white/5 rounded-xl p-3 md:p-4 border border-white/10">
+                                <div className="flex items-center gap-2 text-text-muted text-xs md:text-sm mb-1">
+                                    <Clock size={14} className="md:w-4 md:h-4" />
                                     <span>Runtime</span>
                                 </div>
-                                <p className="text-text font-bold text-lg">{movie.runtime} min</p>
+                                <p className="text-text font-bold text-base md:text-lg">{movie.runtime} min</p>
                             </div>
                         )}
 
-                        <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                            <div className="text-text-muted text-sm mb-1">Genres</div>
+                        <div className="bg-white/5 rounded-xl p-3 md:p-4 border border-white/10">
+                            <div className="text-text-muted text-xs md:text-sm mb-1">Genres</div>
                             <div className="flex flex-wrap gap-1">
                                 {movie.genres.slice(0, 3).map(g => (
-                                    <span key={g.id} className="text-text font-medium text-sm bg-primary/10 px-2 py-1 rounded">
+                                    <span key={g.id} className="text-text font-medium text-[10px] md:text-sm bg-primary/10 px-1.5 py-0.5 md:px-2 md:py-1 rounded">
                                         {g.name}
                                     </span>
                                 ))}
