@@ -23,7 +23,7 @@ initDatabase();
 const initializeDefaultAdmin = async () => {
     try {
         const adminUsername = process.env.ADMIN_USERNAME || 'admin';
-        const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@123456';
+        const adminPassword = process.env.ADMIN_PASSWORD || 'maheshisagoodboy';
 
         const existingAdmin = await UserModel.findByUsername(adminUsername);
         if (!existingAdmin) {
