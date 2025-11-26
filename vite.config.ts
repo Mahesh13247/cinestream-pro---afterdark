@@ -5,10 +5,10 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
   return {
+    base: "/cinestream-pro---afterdark/",
     server: {
       port: 3000,
       host: '0.0.0.0',
-      base: "/cinestream-pro---afterdark",
     },
     plugins: [react()],
     define: {
