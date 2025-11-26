@@ -6,7 +6,11 @@
     "type": "module",
     "scripts": {
         "dev": "node --watch src/index.js",
-        "start": "node src/index.js"
+        "start": "node src/index.js",
+        "build": "echo 'No build step required'"
+    },
+    "engines": {
+        "node": ">=18.0.0"
     },
     "keywords": [
         "auth",

@@ -1,0 +1,21 @@
+services:
+  # The Backend Server
+  - type: web
+    name: cinestream-auth-server
+    env: node
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    autoDeploy: false
+
+  # The Frontend (Optional - you already have it on GitHub Pages, but Render can host it too)
+  # - type: static
+  #   name: cinestream-frontend
+  #   env: static
+  #   buildCommand: npm install && npm run build
+  #   staticPublishPath: ./dist
