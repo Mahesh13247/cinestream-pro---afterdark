@@ -159,120 +159,65 @@ const Navbar = () => {
 
           {/* Mobile Toggle */}
           <button
-            className={`md:hidden p-2 -mr-2 ${showTransparent ? 'text-gray-300' : 'text-text'}`}
+            className={`md:hidden ${showTransparent ? 'text-gray-300' : 'text-text'}`}
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Toggle menu"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMobileMenuOpen ? <X /> : <Menu />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
+      {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)} />
-      )}
-
-      {/* Mobile Menu Sidebar */}
-      <div className={`md:hidden fixed top-0 right-0 h-full w-[80%] max-w-sm bg-background/95 backdrop-blur-xl border-l border-white/10 shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-        <div className="flex flex-col h-full pt-safe pb-safe">
-          {/* Mobile Menu Header */}
-          <div className="flex items-center justify-between p-4 border-b border-white/10">
-            <span className="font-bold text-lg text-text">Menu</span>
-            <button
+        <div className="md:hidden absolute top-16 left-0 w-full bg-background border-b border-white/10 p-4 flex flex-col gap-4 shadow-2xl animate-slide-up">
+          <form onSubmit={handleSearch} className="relative w-full">
+            <Search className="absolute left-3 top-2.5 w-4 h-4 text-text-muted" />
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-surface border border-white/10 rounded-lg py-2 pl-9 pr-4 text-sm text-text placeholder-text-muted"
+            />
+          </form>
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
               onClick={() => setIsMobileMenuOpen(false)}
-              className="p-2 -mr-2 text-text-muted hover:text-text transition-colors"
+              className="text-base font-medium text-text-muted hover:text-primary py-2 border-b border-white/5"
             >
-              <X size={24} />
-            </button>
-          </div>
-
-          {/* Mobile Search */}
-          <div className="p-4 border-b border-white/10">
-            <form onSubmit={handleSearch} className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-muted" />
-              <input
-                type="text"
-                placeholder={isAdultMode ? "Search videos..." : "Search movies..."}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-surface/50 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-text placeholder-text-muted focus:outline-none focus:border-primary/50 focus:bg-surface transition-all"
-              />
-            </form>
-          </div>
-
-          {/* Mobile Links */}
-          <div className="flex-1 overflow-y-auto py-2">
-            <div className="px-2 space-y-1">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={`flex items-center px-4 py-3 rounded-lg text-base font-medium transition-colors ${location.pathname === link.path
-                      ? 'bg-primary/10 text-primary'
-                      : 'text-text-muted hover:text-text hover:bg-white/5'
-                    }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <Link
-                to="/livetv"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium text-text-muted hover:text-red-500 hover:bg-white/5 transition-colors"
-              >
-                <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span> Live TV
-              </Link>
-              {isAdmin && (
-                <Link
-                  to="/admin-dashboard"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-2 px-4 py-3 rounded-lg text-base font-medium text-purple-400 hover:bg-purple-500/10 transition-colors"
-                >
-                  <Shield className="w-4 h-4" /> Admin Panel
-                </Link>
-              )}
-            </div>
-          </div>
-
-          {/* Mobile Footer Actions */}
-          <div className="p-4 border-t border-white/10 bg-surface/30">
-            {user ? (
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 px-2">
-                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
-                    {user.username.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-text truncate">{user.username}</p>
-                    <p className="text-xs text-text-muted">Member</p>
-                  </div>
+              {link.name}
+            </Link>
+          ))}
+          {isAdmin && (
+            <Link
+              to="/admin-dashboard"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="text-base font-medium text-purple-400 hover:text-purple-300 py-2 border-b border-white/5 flex items-center gap-2"
+            >
+              <Shield className="w-4 h-4" /> Admin Panel
+            </Link>
+          )}
+          {user && (
+            <div className="pt-2 border-t border-white/10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4 text-text-muted" />
+                  <span className="text-sm text-text">{user.username}</span>
                 </div>
                 <button
-                  onClick={() => {
-                    handleLogout();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 rounded-xl transition-colors font-medium"
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition"
                 >
                   <LogOut className="w-4 h-4" />
-                  Logout
+                  <span className="text-sm">Logout</span>
                 </button>
               </div>
-            ) : (
-              <Link
-                to="/login"
-                onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-black rounded-xl font-bold hover:bg-primary/90 transition-colors"
-              >
-                <User className="w-4 h-4" />
-                Login
-              </Link>
-            )}
-          </div>
+            </div>
+          )}
         </div>
-      </div>
+      )}
     </nav>
   );
 };

@@ -108,25 +108,26 @@ const Home = () => {
           </div>
 
           {/* Hero Content - Mobile Optimized */}
-          <div className="absolute bottom-0 left-0 w-full p-4 md:p-8 lg:p-16 z-30 pb-safe">
+          <div className="absolute bottom-0 left-0 w-full p-4 md:p-8 lg:p-16 z-30">
             <div className="max-w-4xl space-y-3 md:space-y-5 animate-fade-in">
               {/* Badges - Compact on Mobile */}
               <div className="flex items-center gap-2 md:gap-3 flex-wrap">
-                <span className="px-2.5 py-1 md:px-4 md:py-1.5 bg-primary/20 backdrop-blur-md border border-primary/30 rounded-full text-primary text-[10px] md:text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
-                  <TrendingUp className="w-3 h-3 md:w-3.5 md:h-3.5" />
-                  <span>Trending</span>
+                <span className="px-3 md:px-4 py-1 md:py-1.5 bg-primary/20 backdrop-blur-md border border-primary/30 rounded-full text-primary text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 md:gap-2">
+                  <TrendingUp className="w-3 md:w-3.5" />
+                  <span className="hidden sm:inline">Trending Now</span>
+                  <span className="sm:hidden">Trending</span>
                 </span>
                 {heroMovie.vote_average && (
-                  <span className="px-2.5 py-1 md:px-4 md:py-1.5 bg-yellow-500/20 backdrop-blur-md border border-yellow-500/30 rounded-full text-yellow-400 text-[10px] md:text-xs font-bold flex items-center gap-1.5">
-                    <Star className="w-3 h-3 md:w-3.5 md:h-3.5 fill-current" />
+                  <span className="px-3 md:px-4 py-1 md:py-1.5 bg-yellow-500/20 backdrop-blur-md border border-yellow-500/30 rounded-full text-yellow-400 text-xs font-bold flex items-center gap-1.5">
+                    <Star className="w-3 md:w-3.5 fill-current" />
                     {heroMovie.vote_average.toFixed(1)}
                   </span>
                 )}
               </div>
 
               {/* Title - Responsive Sizing - Theme Aware */}
-              <h1 className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black leading-tight" style={{ color: 'var(--color-hero-text)' }}>
-                <span className="drop-shadow-2xl line-clamp-2">
+              <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black leading-tight" style={{ color: 'var(--color-hero-text)' }}>
+                <span className="drop-shadow-2xl">
                   {heroMovie.title || heroMovie.name}
                 </span>
               </h1>
@@ -153,20 +154,20 @@ const Home = () => {
               </div>
 
               {/* CTA Buttons - Touch-Optimized */}
-              <div className="flex items-center gap-3 md:gap-4 pt-2 md:pt-4">
+              <div className="flex items-center gap-3 md:gap-4 pt-2 md:pt-4 flex-wrap">
                 <Link
                   to={`/watch/${heroMovie.id}`}
-                  className="flex-1 sm:flex-none justify-center group bg-primary text-black font-bold px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3 hover:bg-blue-400 transition-all transform active:scale-95 md:hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-primary/50 min-h-[44px]"
+                  className="group bg-primary text-black font-bold px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3 hover:bg-blue-400 transition-all transform active:scale-95 md:hover:scale-105 shadow-lg hover:shadow-2xl hover:shadow-primary/50 min-h-[44px]"
                 >
-                  <Play className="w-5 h-5 md:w-6 md:h-6 fill-current group-hover:scale-110 transition-transform" />
-                  <span className="text-sm md:text-base whitespace-nowrap">Watch Now</span>
+                  <Play className="w-5 md:w-6 fill-current group-hover:scale-110 transition-transform" />
+                  <span className="text-sm md:text-base">Watch Now</span>
                 </Link>
                 <Link
                   to={`/movies/${heroMovie.id}`}
-                  className="flex-1 sm:flex-none justify-center group backdrop-blur-xl border-2 font-bold px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3 transition-all transform active:scale-95 md:hover:scale-105 min-h-[44px] bg-white/90 dark:bg-white/10 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white hover:bg-white dark:hover:bg-white/20 hover:border-gray-400 dark:hover:border-white/40"
+                  className="group backdrop-blur-xl border-2 font-bold px-6 md:px-8 py-3 md:py-4 rounded-xl md:rounded-2xl flex items-center gap-2 md:gap-3 transition-all transform active:scale-95 md:hover:scale-105 min-h-[44px] bg-white/90 dark:bg-white/10 border-gray-300 dark:border-white/20 text-gray-900 dark:text-white hover:bg-white dark:hover:bg-white/20 hover:border-gray-400 dark:hover:border-white/40"
                 >
-                  <Info className="w-5 h-5 md:w-6 md:h-6 group-hover:rotate-12 transition-transform" />
-                  <span className="text-sm md:text-base whitespace-nowrap">More Info</span>
+                  <Info className="w-5 md:w-6 group-hover:rotate-12 transition-transform" />
+                  <span className="text-sm md:text-base">More Info</span>
                 </Link>
               </div>
             </div>
@@ -200,12 +201,12 @@ const Home = () => {
             {/* Movies Grid - Horizontal Scroll on Mobile, Grid on Desktop */}
             <div className="relative">
               {/* Mobile: Horizontal Scroll */}
-              <div className="md:hidden overflow-x-auto scrollbar-hide -mx-4 px-4 pb-4">
-                <div className="flex gap-4">
+              <div className="md:hidden overflow-x-auto scrollbar-hide -mx-4 px-4">
+                <div className="flex gap-4 pb-4 snap-x snap-mandatory">
                   {continueWatchingMovies.slice(0, 10).map((movie) => (
                     <div
                       key={movie.id}
-                      className="flex-none w-[160px]"
+                      className="flex-none w-[160px] snap-start"
                     >
                       <ContinueWatchingCard movie={movie} onRemove={removeItem} />
                     </div>
@@ -219,6 +220,9 @@ const Home = () => {
                   <ContinueWatchingCard key={movie.id} movie={movie} onRemove={removeItem} />
                 ))}
               </div>
+
+              {/* Gradient Fade on Mobile Scroll */}
+              <div className="md:hidden absolute top-0 right-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent pointer-events-none" />
             </div>
           </section>
         )}

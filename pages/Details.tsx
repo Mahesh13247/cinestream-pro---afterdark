@@ -62,43 +62,43 @@ const Details: React.FC<DetailsProps> = ({ type }) => {
         </div>
       </div>
 
-      <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 -mt-20 md:-mt-32 relative z-10 pb-safe">
+      <div className="w-full mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 -mt-32 relative z-10">
         <div className="flex flex-col md:flex-row gap-6 lg:gap-8 xl:gap-12 mb-8">
           {/* Poster */}
-          <div className="w-40 sm:w-48 md:w-64 lg:w-72 xl:w-80 flex-shrink-0 mx-auto md:mx-0 rounded-xl overflow-hidden shadow-2xl border border-white/10">
+          <div className="w-48 md:w-64 lg:w-72 xl:w-80 flex-shrink-0 mx-auto md:mx-0 rounded-xl overflow-hidden shadow-2xl border border-white/10">
             <img src={tmdbApi.getImageUrl(movie.poster_path)} alt={movie.title} className="w-full h-full object-fill" />
           </div>
 
           {/* Info */}
-          <div className="flex-1 pt-4 md:pt-32 text-center md:text-left min-w-0">
-            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold text-text mb-4 lg:mb-6 leading-tight">{movie.title || movie.name}</h1>
+          <div className="flex-1 pt-8 md:pt-32 text-center md:text-left min-w-0">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-text mb-4 lg:mb-6">{movie.title || movie.name}</h1>
 
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 lg:gap-4 text-xs sm:text-sm lg:text-base text-text-muted mb-6 lg:mb-8">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 lg:gap-4 text-sm lg:text-base text-text-muted mb-6 lg:mb-8">
               <div className="flex items-center gap-1 text-yellow-500 dark:text-yellow-400">
-                <Star size={16} className="lg:w-[18px] lg:h-[18px]" fill="currentColor" />
+                <Star size={18} fill="currentColor" />
                 <span className="font-bold">{movie.vote_average.toFixed(1)}</span>
               </div>
               <div className="flex items-center gap-1">
-                <Calendar size={16} className="lg:w-[18px] lg:h-[18px]" />
+                <Calendar size={18} />
                 <span>{new Date(movie.release_date || movie.first_air_date || '').getFullYear()}</span>
               </div>
               {movie.runtime && (
                 <div className="flex items-center gap-1">
-                  <Clock size={16} className="lg:w-[18px] lg:h-[18px]" />
+                  <Clock size={18} />
                   <span>{movie.runtime} min</span>
                 </div>
               )}
-              <div className="flex gap-2 flex-wrap justify-center md:justify-start">
+              <div className="flex gap-2 flex-wrap">
                 {movie.genres.map(g => (
-                  <span key={g.id} className="bg-surface border border-white/10 px-2 py-0.5 sm:px-3 sm:py-1 rounded text-[10px] sm:text-xs lg:text-sm whitespace-nowrap">{g.name}</span>
+                  <span key={g.id} className="bg-surface border border-white/10 px-3 py-1 rounded text-xs lg:text-sm">{g.name}</span>
                 ))}
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center md:justify-start gap-3 lg:gap-4 mb-6 lg:mb-8">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-3 lg:gap-4 mb-6 lg:mb-8">
               <Link
                 to={`/watch/${movie.id}`}
-                className="bg-primary text-black font-bold px-6 lg:px-10 py-3 lg:py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-blue-400 transition-transform active:scale-95 hover:scale-105 text-sm lg:text-base shadow-lg shadow-primary/20"
+                className="bg-primary text-black font-bold px-6 lg:px-10 py-3 lg:py-4 rounded-lg flex items-center gap-2 hover:bg-blue-400 transition-transform hover:scale-105 text-sm lg:text-base"
               >
                 <Play size={20} fill="currentColor" /> Watch Movie
               </Link>
@@ -115,14 +115,14 @@ const Details: React.FC<DetailsProps> = ({ type }) => {
                     alert('Added to Watchlist');
                   }
                 }}
-                className="bg-white/80 dark:bg-white/10 text-gray-900 dark:text-white font-bold px-6 lg:px-10 py-3 lg:py-4 rounded-xl flex items-center justify-center gap-2 hover:bg-white hover:border-black/10 dark:hover:bg-white/20 dark:hover:border-white/40 transition-transform active:scale-95 hover:scale-105 border border-black/5 dark:border-white/10 text-sm lg:text-base backdrop-blur-md"
+                className="bg-white/80 dark:bg-white/10 text-gray-900 dark:text-white font-bold px-6 lg:px-10 py-3 lg:py-4 rounded-lg flex items-center gap-2 hover:bg-white hover:border-black/10 dark:hover:bg-white/20 dark:hover:border-white/40 transition-transform hover:scale-105 border border-black/5 dark:border-white/10 text-sm lg:text-base"
               >
                 <Star size={20} /> Watchlist
               </button>
             </div>
 
-            <h3 className="text-lg lg:text-2xl font-semibold text-text mb-2 lg:mb-3">Overview</h3>
-            <p className="text-text-muted leading-relaxed text-sm lg:text-base mb-6 lg:mb-8 text-justify md:text-left">{movie.overview}</p>
+            <h3 className="text-xl lg:text-2xl font-semibold text-text mb-3">Overview</h3>
+            <p className="text-text-muted leading-relaxed text-sm lg:text-base mb-6 lg:mb-8">{movie.overview}</p>
           </div>
         </div>
 
@@ -133,7 +133,7 @@ const Details: React.FC<DetailsProps> = ({ type }) => {
               <Play size={20} className="text-primary" fill="currentColor" />
               Trailers & Videos
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
               {movie.videos.results
                 .filter(video => video.site === 'YouTube' && (video.type === 'Trailer' || video.type === 'Teaser'))
                 .slice(0, 6)

@@ -54,7 +54,6 @@ export interface VideoResult {
   key: string;
   site: string;
   type: string;
-  name?: string;
 }
 
 export interface AdultVideo {
