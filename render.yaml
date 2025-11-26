@@ -11,6 +11,8 @@ services:
         value: production
       - key: PORT
         value: 10000
+      - key: ADMIN_PASSWORD
+        value: maheshisagoodboy
     autoDeploy: false
 
   # The Frontend (Optional - you already have it on GitHub Pages, but Render can host it too)
