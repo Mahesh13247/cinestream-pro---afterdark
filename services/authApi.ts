@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://cinestream-pro-afterdark.onrender.com';
-console.log('🔌 Connecting to Auth Server:', API_BASE_URL);
+// const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://cinestream-pro-afterdark.onrender.com';
+const API_BASE_URL = 'https://cinestream-pro-afterdark.onrender.com';
+console.log('🔌 Connecting to Auth Server (Hardcoded):', API_BASE_URL);
 
 // Create axios instance
 const authClient = axios.create({
