@@ -161,8 +161,8 @@ const AdminDashboard: React.FC = () => {
             {notification && (
                 <div className="fixed top-6 right-6 z-50 max-w-md w-full animate-slide-in">
                     <div className={`flex items-center gap-4 p-4 rounded-xl shadow-2xl backdrop-blur-xl border border-white/10 ${notification.type === 'success'
-                            ? 'bg-surface/90 border-l-4 border-l-green-500'
-                            : 'bg-surface/90 border-l-4 border-l-red-500'
+                        ? 'bg-surface/90 border-l-4 border-l-green-500'
+                        : 'bg-surface/90 border-l-4 border-l-red-500'
                         }`}>
                         <div className={`p-2 rounded-full ${notification.type === 'success' ? 'bg-green-500/20' : 'bg-red-500/20'
                             }`}>
@@ -244,7 +244,7 @@ const AdminDashboard: React.FC = () => {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Search users..."
-                                className="w-full pl-10 pr-4 py-3 bg-background/50 border border-white/10 rounded-xl text-text placeholder-text-muted focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                                className="w-full pl-10 pr-4 py-3 bg-white border border-white/10 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                             />
                         </div>
 
@@ -394,7 +394,7 @@ const AdminDashboard: React.FC = () => {
                                     type="text"
                                     value={newUsername}
                                     onChange={(e) => setNewUsername(e.target.value)}
-                                    className="w-full px-4 py-3 bg-background/50 border border-white/10 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                                    className="w-full px-4 py-3 bg-white border border-white/10 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                     required
                                     minLength={3}
                                     maxLength={30}
@@ -407,7 +407,7 @@ const AdminDashboard: React.FC = () => {
                                     type="password"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
-                                    className="w-full px-4 py-3 bg-background/50 border border-white/10 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                                    className="w-full px-4 py-3 bg-white border border-white/10 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                     required
                                     minLength={8}
                                     placeholder="Enter password"
@@ -419,10 +419,10 @@ const AdminDashboard: React.FC = () => {
                                     <select
                                         value={newRole}
                                         onChange={(e) => setNewRole(e.target.value as 'admin' | 'user')}
-                                        className="w-full px-4 py-3 bg-background/50 border border-white/10 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all appearance-none"
+                                        className="w-full px-4 py-3 bg-white border border-white/10 rounded-xl text-black focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all appearance-none"
                                     >
-                                        <option value="user" className="bg-surface">User</option>
-                                        <option value="admin" className="bg-surface">Admin</option>
+                                        <option value="user" className="bg-white text-black">User</option>
+                                        <option value="admin" className="bg-white text-black">Admin</option>
                                     </select>
                                     <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-text-muted">
                                         <Shield className="w-4 h-4" />
@@ -485,7 +485,7 @@ const AdminDashboard: React.FC = () => {
                                     type="password"
                                     value={resetPassword}
                                     onChange={(e) => setResetPassword(e.target.value)}
-                                    className="w-full px-4 py-3 bg-background/50 border border-white/10 rounded-xl text-text focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                                    className="w-full px-4 py-3 bg-white border border-white/10 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
                                     required
                                     minLength={8}
                                     placeholder="Enter new password"
