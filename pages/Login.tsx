@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Navigate } from 'react-router-dom';
 import { Lock, User, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 const Login: React.FC = () => {
@@ -24,8 +23,9 @@ const Login: React.FC = () => {
         try {
             await login(username, password);
             // Redirect is handled in AuthContext
-        } catch (err: any) {
-            setError(err.message || 'Login failed. Please try again.');
+        } catch (err) {
+            const error = err as Error;
+            setError(error.message || 'Login failed. Please try again.');
         } finally {
             setLoading(false);
         }

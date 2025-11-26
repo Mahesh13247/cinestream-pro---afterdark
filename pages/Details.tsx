@@ -105,8 +105,8 @@ const Details: React.FC<DetailsProps> = ({ type }) => {
               <button
                 onClick={() => {
                   const watchlist = JSON.parse(localStorage.getItem('watchlist') || '[]');
-                  if (watchlist.some((m: any) => m.id === movie.id)) {
-                    const newWatchlist = watchlist.filter((m: any) => m.id !== movie.id);
+                  if (watchlist.some((m: { id: number }) => m.id === movie.id)) {
+                    const newWatchlist = watchlist.filter((m: { id: number }) => m.id !== movie.id);
                     localStorage.setItem('watchlist', JSON.stringify(newWatchlist));
                     alert('Removed from Watchlist');
                   } else {

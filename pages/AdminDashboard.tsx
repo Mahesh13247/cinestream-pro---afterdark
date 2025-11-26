@@ -67,8 +67,9 @@ const AdminDashboard: React.FC = () => {
                 setNewRole('user');
                 fetchUsers();
             }
-        } catch (error: any) {
-            showNotification('error', error.response?.data?.message || 'Failed to create user');
+        } catch (error) {
+            const err = error as { response?: { data?: { message?: string } } };
+            showNotification('error', err.response?.data?.message || 'Failed to create user');
         }
     };
 
@@ -81,8 +82,9 @@ const AdminDashboard: React.FC = () => {
                 showNotification('success', 'User deleted successfully');
                 fetchUsers();
             }
-        } catch (error: any) {
-            showNotification('error', error.response?.data?.message || 'Failed to delete user');
+        } catch (error) {
+            const err = error as { response?: { data?: { message?: string } } };
+            showNotification('error', err.response?.data?.message || 'Failed to delete user');
         }
     };
 
@@ -96,8 +98,9 @@ const AdminDashboard: React.FC = () => {
                 showNotification('success', isBlocked ? 'User unblocked' : 'User blocked');
                 fetchUsers();
             }
-        } catch (error: any) {
-            showNotification('error', error.response?.data?.message || 'Failed to update user');
+        } catch (error) {
+            const err = error as { response?: { data?: { message?: string } } };
+            showNotification('error', err.response?.data?.message || 'Failed to update user');
         }
     };
 
@@ -113,8 +116,9 @@ const AdminDashboard: React.FC = () => {
                 setResetPassword('');
                 setSelectedUser(null);
             }
-        } catch (error: any) {
-            showNotification('error', error.response?.data?.message || 'Failed to reset password');
+        } catch (error) {
+            const err = error as { response?: { data?: { message?: string } } };
+            showNotification('error', err.response?.data?.message || 'Failed to reset password');
         }
     };
 

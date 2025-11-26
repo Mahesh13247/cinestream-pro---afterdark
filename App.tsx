@@ -21,6 +21,8 @@ import Actor from './pages/Actor';
 import Login from './pages/Login';
 import AdminDashboard from './pages/AdminDashboard';
 import { initializeProviders } from './providers';
+import Footer from './components/Footer';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Create React Query client
 const queryClient = new QueryClient({
@@ -33,8 +35,6 @@ const queryClient = new QueryClient({
     },
   },
 });
-
-import Footer from './components/Footer';
 
 // Simple wrapper to conditionally render Navbar and Footer
 const Layout = ({ children }: { children?: React.ReactNode }) => {
@@ -54,173 +54,175 @@ const App = () => {
   }, []);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <HashRouter>
-        <AuthProvider>
-          <ThemeProvider>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/login" element={<Login />} />
+    <ErrorBoundary>
+      <QueryClientProvider client={queryClient}>
+        <HashRouter>
+          <AuthProvider>
+            <ThemeProvider>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/login" element={<Login />} />
 
-              {/* Protected Routes */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Home />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/movies"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Movies />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/webseries"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <WebSeries />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/livetv"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <LiveTV />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/favorites"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Favorites />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/history"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <History />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/search"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Search />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/genres"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Genres />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/genres/:genreId"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Genres />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/movies/:id"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Details type="movie" />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/webseries/:id"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Details type="tv" />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/watch/:movieId"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Watch />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/actor/:actorId"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Actor />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/adult/*"
-                element={
-                  <ProtectedRoute>
-                    <Layout>
-                      <Adult />
-                    </Layout>
-                  </ProtectedRoute>
-                }
-              />
+                {/* Protected Routes */}
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Home />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/movies"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Movies />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/webseries"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <WebSeries />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/livetv"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <LiveTV />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/favorites"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Favorites />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/history"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <History />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/search"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Search />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/genres"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Genres />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/genres/:genreId"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Genres />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/movies/:id"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Details type="movie" />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/webseries/:id"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Details type="tv" />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/watch/:movieId"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Watch />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/actor/:actorId"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Actor />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/adult/*"
+                  element={
+                    <ProtectedRoute>
+                      <Layout>
+                        <Adult />
+                      </Layout>
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Admin Routes */}
-              <Route
-                path="/admin-dashboard"
-                element={
-                  <AdminRoute>
-                    <AdminDashboard />
-                  </AdminRoute>
-                }
-              />
+                {/* Admin Routes */}
+                <Route
+                  path="/admin-dashboard"
+                  element={
+                    <AdminRoute>
+                      <AdminDashboard />
+                    </AdminRoute>
+                  }
+                />
 
-              {/* Fallbacks */}
-              <Route path="*" element={<div className="p-20 text-center text-white">404 - Page Not Found</div>} />
-            </Routes>
-          </ThemeProvider>
-        </AuthProvider>
-      </HashRouter>
-    </QueryClientProvider>
+                {/* Fallbacks */}
+                <Route path="*" element={<div className="p-20 text-center text-white">404 - Page Not Found</div>} />
+              </Routes>
+            </ThemeProvider>
+          </AuthProvider>
+        </HashRouter>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 };
 

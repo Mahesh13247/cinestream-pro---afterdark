@@ -11,7 +11,7 @@ const EPORNER_API_BASE = 'https://www.eporner.com/api/v2';
 
 // Development-only logging (removed in production)
 if (import.meta.env.DEV) {
-  console.log('TMDB API configured:', TMDB_API_KEY ? '✓' : '✗ MISSING');
+
 }
 
 // --- TMDB API ---

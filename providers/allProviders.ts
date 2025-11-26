@@ -184,5 +184,4 @@ export const AllNewProviders: IProvider[] = [
     ...AllEmbedProviders, // 34 real embed providers
 ];
 
-console.log(`📦 Provider Registry: ${AllProviderIds.length} providers configured`);
-console.log(`✅ ${AllNewProviders.length} NEW providers ready (${AllEmbedProviders.length} embed)`);
+

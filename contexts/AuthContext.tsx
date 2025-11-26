@@ -29,12 +29,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
     const checkAuth = async () => {
         try {
-            // IMPORTANT: Clear tokens on every page load to force re-login
             const token = sessionStorage.getItem('accessToken');
-
-            // Clear the token immediately after reading it
-            sessionStorage.removeItem('accessToken');
-            sessionStorage.removeItem('refreshToken');
 
             if (!token) {
                 setUser(null);
@@ -42,9 +37,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 return;
             }
 
-            // Even if token exists, we clear it and force re-login
-            setUser(null);
-            setLoading(false);
+            // Verify token with backend
+            try {
+                const response = await authApi.getCurrentUser();
+                if (response.success && response.data) {
+                    setUser(response.data);
+                } else {
+                    // Invalid token
+                    throw new Error('Invalid session');
+                }
+            } catch (err) {
+                // Token invalid or expired
+                console.error('Session verification failed:', err);
+                sessionStorage.removeItem('accessToken');
+                sessionStorage.removeItem('refreshToken');
+                setUser(null);
+            } finally {
+                setLoading(false);
+            }
         } catch (error) {
             console.error('Auth check failed:', error);
             setUser(null);
@@ -100,11 +110,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     };
 
     useEffect(() => {
-        // Clear auth on every mount (page load/reload)
-        sessionStorage.removeItem('accessToken');
-        sessionStorage.removeItem('refreshToken');
-        setUser(null);
-        setLoading(false);
+        // Check authentication on mount
+        checkAuth();
     }, []);
 
     const value: AuthContextType = {
