@@ -99,7 +99,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log(`🚀 Auth Server running on port ${PORT}`);
     console.log(`🌐 Frontend URL: ${FRONTEND_URL}`);
