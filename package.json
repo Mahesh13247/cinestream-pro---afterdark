@@ -1,0 +1,50 @@
+{
+  "name": "cinestream-pro-&-afterdark",
+  "homepage": "https://Mahesh13247.github.io/cinestream-pro---afterdark/",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:server": "cd server && npm run dev",
+    "dev:all": "concurrently \"npm run dev\" \"npm run dev:server\" --names \"frontend,backend\" --prefix-colors \"cyan,magenta\"",
+    "start:server": "cd server && npm start",
+    "start:all": "concurrently \"npm run preview\" \"npm run start:server\" --names \"frontend,backend\" --prefix-colors \"cyan,magenta\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@google/genai": "^1.30.0",
+    "@tanstack/react-query": "^5.90.11",
+    "axios": "^1.13.2",
+    "axios-retry": "^4.5.0",
+    "cheerio": "^1.1.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.2.1",
+    "framer-motion": "^12.23.24",
+    "gh-pages": "^6.3.0",
+    "graphql": "^16.12.0",
+    "graphql-request": "^7.3.4",
+    "hls.js": "^1.6.15",
+    "lucide-react": "^0.554.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.9.6"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.35",
+    "@types/node": "^22.14.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "autoprefixer": "^10.4.22",
+    "concurrently": "^9.2.1",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.17",
+    "typescript": "~5.8.2",
+    "vite": "^6.2.0"
+  }
+}

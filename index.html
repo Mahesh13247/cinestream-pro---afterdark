@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8" />
+
+  <!-- Security Headers - Disabled for development to avoid CSP issues -->
+  <!-- 
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.tailwindcss.com https://unpkg.com https://*.autoembed.cc https://*.embed.su https://*.smashy.stream https://*.vidsrc.to;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com;
+    img-src 'self' https: data: blob:;
+    font-src 'self' https://fonts.gstatic.com data:;
+    connect-src 'self' http://localhost:5000 https://api.themoviedb.org https://www.eporner.com https://iptv-org.github.io https://*.autoembed.cc https://*.embed.su https://*.smashy.stream https://*.vidsrc.to;
+    frame-src https: http:;
+    media-src 'self' https: http: blob:;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+  ">
+  -->
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="no-referrer-when-downgrade">
+
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CineStream Pro afterdark</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            background: 'var(--color-background)',
+            primary: 'var(--color-primary)',
+            secondary: 'var(--color-secondary)',
+            surface: 'var(--color-surface)',
+            'surface-highlight': 'var(--color-surface-highlight)',
+            text: 'var(--color-text)',
+            'text-muted': 'var(--color-text-muted)',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          // Fluid Typography System
+          fontSize: {
+            'fluid-xs': 'clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem)',
+            'fluid-sm': 'clamp(0.875rem, 0.8rem + 0.375vw, 1rem)',
+            'fluid-base': 'clamp(1rem, 0.9rem + 0.5vw, 1.125rem)',
+            'fluid-lg': 'clamp(1.125rem, 1rem + 0.625vw, 1.25rem)',
+            'fluid-xl': 'clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem)',
+            'fluid-2xl': 'clamp(1.5rem, 1.3rem + 1vw, 2rem)',
+            'fluid-3xl': 'clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem)',
+            'fluid-4xl': 'clamp(2.25rem, 1.8rem + 2.25vw, 3rem)',
+            'fluid-5xl': 'clamp(3rem, 2.25rem + 3.75vw, 4rem)',
+            'fluid-6xl': 'clamp(3.75rem, 2.75rem + 5vw, 5rem)',
+          },
+          // Fluid Spacing System
+          spacing: {
+            'fluid-xs': 'clamp(0.25rem, 0.2rem + 0.25vw, 0.5rem)',
+            'fluid-sm': 'clamp(0.5rem, 0.4rem + 0.5vw, 0.75rem)',
+            'fluid-md': 'clamp(1rem, 0.8rem + 1vw, 1.5rem)',
+            'fluid-lg': 'clamp(1.5rem, 1.2rem + 1.5vw, 2rem)',
+            'fluid-xl': 'clamp(2rem, 1.5rem + 2.5vw, 3rem)',
+            'fluid-2xl': 'clamp(3rem, 2rem + 5vw, 4rem)',
+            'fluid-3xl': 'clamp(4rem, 3rem + 5vw, 6rem)',
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.6s ease-out',
+            'slide-up': 'slideUp 0.6s ease-out',
+            'slide-in-left': 'slideInLeft 0.8s ease-out',
+            'slide-in-right': 'slideInRight 0.8s ease-out',
+            'zoom': 'zoom 20s ease-in-out infinite alternate',
+            'glow': 'glow 2s ease-in-out infinite alternate',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(10px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideUp: {
+              '0%': { opacity: '0', transform: 'translateY(30px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideInLeft: {
+              '0%': { opacity: '0', transform: 'translateX(-50px)' },
+              '100%': { opacity: '1', transform: 'translateX(0)' },
+            },
+            slideInRight: {
+              '0%': { opacity: '0', transform: 'translateX(50px)' },
+              '100%': { opacity: '1', transform: 'translateX(0)' },
+            },
+            zoom: {
+              '0%': { transform: 'scale(1)' },
+              '100%': { transform: 'scale(1.1)' },
+            },
+            glow: {
+              '0%': { boxShadow: '0 0 5px rgba(0, 196, 255, 0.5)' },
+              '100%': { boxShadow: '0 0 20px rgba(0, 196, 255, 0.8)' },
+            },
+          },
+          // Responsive Breakpoints
+          screens: {
+            'xs': '320px',
+            'sm': '480px',
+            'md': '768px',
+            'lg': '1024px',
+            'xl': '1280px',
+            '2xl': '1536px',
+            '3xl': '2560px',
+          },
+        },
+      },
+    };
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Global Responsive Utilities */
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: #0A0A0A;
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Container System */
+    .container-responsive {
+      width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    @media (min-width: 480px) {
+      .container-responsive {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .container-responsive {
+        padding-left: 2rem;
+        padding-right: 2rem;
+        max-width: 1536px;
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .container-responsive {
+        padding-left: 3rem;
+        padding-right: 3rem;
+      }
+    }
+
+    /* Responsive Grid System */
+    .grid-responsive {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (min-width: 480px) {
+      .grid-responsive {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
+      }
+    }
+
+    @media (min-width: 768px) {
+      .grid-responsive {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.5rem;
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .grid-responsive {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1280px) {
+      .grid-responsive {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 1536px) {
+      .grid-responsive {
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+      }
+    }
+
+    @media (min-width: 2560px) {
+      .grid-responsive {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        gap: 2rem;
+      }
+    }
+
+    /* Aspect Ratio Utilities */
+    .aspect-video {
+      aspect-ratio: 16 / 9;
+    }
+
+    .aspect-poster {
+      aspect-ratio: 2 / 3;
+    }
+
+    /* Smooth Scrollbar */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 0, 51, 0.5);
+      border-radius: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 0, 51, 0.7);
+    }
+
+    /* Glass Effect */
+    .glass-panel {
+      background: rgba(18, 18, 18, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    /* Reduce Motion for Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Focus Visible for Accessibility */
+    *:focus-visible {
+      outline: 2px solid #00C4FF;
+      outline-offset: 2px;
+    }
+
+    /* Prevent Layout Shift */
+    img,
+    video,
+    iframe {
+      max-width: 100%;
+      height: auto;
+    }
+  </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "axios": "https://aistudiocdn.com/axios@^1.13.2",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.6",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "hls.js": "https://aistudiocdn.com/hls.js@^1.6.15"
+  }
+}
+</script>
+  <link rel="stylesheet" href="/index.css">
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>

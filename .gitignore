@@ -1,0 +1,131 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+server/node_modules
+
+# Build outputs
+dist
+dist-ssr
+build
+*.local
+
+# Environment variables (IMPORTANT - contains API keys and secrets)
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+server/.env
+server/.env.local
+
+# Database files (contains user data and credentials)
+server/data/database.json
+server/data/*.db
+server/data/*.sqlite
+server/data/*.sqlite3
+*.db
+*.sqlite
+*.sqlite3
+
+# Sensitive documentation (contains passwords and credentials)
+AUTH_README.md
+START_SERVERS.md
+*_CREDENTIALS.md
+*_SECRETS.md
+PASSWORDS.md
+
+# Script files (may contain sensitive commands)
+start.bat
+start.ps1
+*.bat
+*.ps1
+*.sh
+
+# Backup files
+*.backup
+*.bak
+*.tmp
+*~
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.idea/*
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+
+# Test coverage
+coverage
+*.coverage
+.nyc_output
+
+# Temporary files
+tmp
+temp
+*.tmp
+*.temp
+
+# Lock files (optional - uncomment if you want to ignore them)
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+# Provider configuration (may contain API keys or sensitive URLs)
+providers/config/*.json
+providers/config/*.env
+
+# Metadata and project-specific files
+metadata.json
+
+# User data and preferences
+favorites.json
+watchlist.json
+user-preferences.json
+
+# API keys and secrets (additional patterns)
+*secret*
+*SECRET*
+*apikey*
+*APIKEY*
+*api-key*
+*API-KEY*
+credentials.json
+secrets.json
+config.local.json
+
+# Production builds and deployment
+.vercel
+.netlify
+.firebase
+.aws
+
+# Additional sensitive documentation
+DEPLOYMENT.md
+PRODUCTION.md
+API_KEYS.md
+SETUP_GUIDE.md
