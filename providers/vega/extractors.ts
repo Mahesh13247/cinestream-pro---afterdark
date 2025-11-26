@@ -94,15 +94,16 @@ export const extractors = {
                 index === self.findIndex((s) => s.link === stream.link)
             );
 
-            console.log(`HubCloud extractor found ${uniqueStreams.length} streams from ${link}`);
+            // console.log(`HubCloud extractor found ${uniqueStreams.length} streams from ${link}`);
             return uniqueStreams;
 
-        } catch (error: any) {
-            if (error.message?.includes('aborted')) {
-                console.log('HubCloud extraction aborted');
+        } catch (error) {
+            const err = error as Error;
+            if (err.message?.includes('aborted')) {
+                // console.log('HubCloud extraction aborted');
                 return [];
             }
-            console.error('HubCloud extractor error:', error.message);
+            console.error('HubCloud extractor error:', err.message);
             return [];
         }
     },
