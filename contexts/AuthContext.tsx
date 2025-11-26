@@ -70,9 +70,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
                 // Redirect based on role
                 if (user.role === 'admin') {
-                    window.location.href = '/#/admin-dashboard';
+                    window.location.hash = '/admin-dashboard';
                 } else {
-                    window.location.href = '/#/';
+                    window.location.hash = '/';
                 }
             } else {
                 throw new Error(response.message || 'Login failed');
@@ -95,7 +95,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             setUser(null);
 
             // Redirect to login
-            window.location.href = '/#/login';
+            window.location.hash = '/login';
         }
     };
 
