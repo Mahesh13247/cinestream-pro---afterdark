@@ -16,8 +16,10 @@ interface AuthContextType {
     isAuthenticated: boolean;
     isAdmin: boolean;
     loading: boolean;
+    isLocked: boolean;
     login: (username: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
+    unlock: (password: string) => Promise<void>;
     checkAuth: () => Promise<void>;
 }
 
@@ -26,6 +28,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    // Initialize locked state based on token existence
+    const [isLocked, setIsLocked] = useState(!!sessionStorage.getItem('accessToken'));
 
     const checkAuth = async () => {
         try {
@@ -34,6 +38,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             if (!token) {
                 setUser(null);
                 setLoading(false);
+                setIsLocked(false); // No token, so not locked (show login)
                 return;
             }
 
@@ -42,6 +47,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 const response = await authApi.getCurrentUser();
                 if (response.success && response.data) {
                     setUser(response.data);
+                    // Keep isLocked as true if it was initialized as true (refresh)
+                    // But if we just logged in, it should be false.
+                    // We handle that in login().
                 } else {
                     // Invalid token
                     throw new Error('Invalid session');
@@ -52,6 +60,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 sessionStorage.removeItem('accessToken');
                 sessionStorage.removeItem('refreshToken');
                 setUser(null);
+                setIsLocked(false);
             } finally {
                 setLoading(false);
             }
@@ -61,6 +70,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             sessionStorage.removeItem('accessToken');
             sessionStorage.removeItem('refreshToken');
             setLoading(false);
+            setIsLocked(false);
         }
     };
 
@@ -77,6 +87,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
                 // Set user
                 setUser(user);
+                setIsLocked(false); // Explicitly unlock on fresh login
 
                 // Redirect based on role
                 if (user.role === 'admin') {
@@ -93,6 +104,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         }
     };
 
+    const unlock = async (password: string) => {
+        if (!user) return;
+        try {
+            // Verify password by attempting login (or use a verify endpoint if available)
+            // Since we don't have a specific verify endpoint, we use login
+            const response = await authApi.login(user.username, password);
+            if (response.success) {
+                setIsLocked(false);
+            } else {
+                throw new Error('Incorrect password');
+            }
+        } catch (error: any) {
+            throw new Error('Incorrect password');
+        }
+    };
+
     const logout = async () => {
         try {
             await authApi.logout();
@@ -103,6 +130,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             sessionStorage.removeItem('accessToken');
             sessionStorage.removeItem('refreshToken');
             setUser(null);
+            setIsLocked(false);
 
             // Redirect to login
             window.location.hash = '/login';
@@ -119,8 +147,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         isAuthenticated: !!user,
         isAdmin: user?.role === 'admin',
         loading,
+        isLocked,
         login,
         logout,
+        unlock,
         checkAuth,
     };
 
