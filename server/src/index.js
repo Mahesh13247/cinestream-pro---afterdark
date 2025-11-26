@@ -26,13 +26,22 @@ const initializeDefaultAdmin = async () => {
         const adminPassword = process.env.ADMIN_PASSWORD || 'maheshisagoodboy';
 
         const existingAdmin = await UserModel.findByUsername(adminUsername);
+
         if (!existingAdmin) {
+            // Create new admin if not exists
             await UserModel.create(adminUsername, adminPassword, 'admin');
             console.log(`✓ Default admin user created: ${adminUsername}`);
             console.log(`⚠️  IMPORTANT: Change the default password immediately!`);
+        } else {
+            // Check if password needs update
+            const isPasswordMatch = await UserModel.comparePassword(adminPassword, existingAdmin.password);
+            if (!isPasswordMatch) {
+                await UserModel.updatePassword(existingAdmin.id, adminPassword);
+                console.log(`✓ Admin password updated to match environment configuration`);
+            }
         }
     } catch (error) {
-        console.error('Error creating default admin:', error);
+        console.error('Error initializing default admin:', error);
     }
 };
 
