@@ -27,7 +27,7 @@ const Search = () => {
 
             const results = await tmdbApi.search(q, pageNum);
             // Filter out people and items without images for cleaner look
-            const filtered = results.filter((m: Movie) => m.media_type !== 'person' && (m.poster_path || m.backdrop_path));
+            const filtered = results.filter((m: any) => m.media_type !== 'person' && (m.poster_path || m.backdrop_path));
 
             if (filtered.length === 0) {
                 setHasMore(false);

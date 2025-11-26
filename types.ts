@@ -9,7 +9,7 @@ export interface Movie {
   first_air_date?: string;
   overview: string;
   genre_ids?: number[];
-  media_type?: 'movie' | 'tv';
+  media_type?: 'movie' | 'tv' | 'person';
   original_language?: string;
   popularity?: number;
   vote_count?: number;

@@ -1,42 +1,45 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
+import * as React from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 
 interface Props {
-    children: ReactNode;
+    children: React.ReactNode;
 }
 
 interface State {
     hasError: boolean;
     error: Error | null;
-    errorInfo: ErrorInfo | null;
+    errorInfo: React.ErrorInfo | null;
 }
 
-class ErrorBoundary extends Component<Props, State> {
-    public state: State = {
-        hasError: false,
-        error: null,
-        errorInfo: null
-    };
+class ErrorBoundary extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props);
+        this.state = {
+            hasError: false,
+            error: null,
+            errorInfo: null
+        };
+    }
 
-    public static getDerivedStateFromError(error: Error): State {
+    static getDerivedStateFromError(error: Error): State {
         // Update state so the next render will show the fallback UI.
         return { hasError: true, error, errorInfo: null };
     }
 
-    public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
         console.error("Uncaught error:", error, errorInfo);
         this.setState({ errorInfo });
     }
 
-    private handleReload = () => {
+    handleReload = () => {
         window.location.reload();
     };
 
-    private handleGoHome = () => {
+    handleGoHome = () => {
         window.location.href = '/';
     };
 
-    public render() {
+    render() {
         if (this.state.hasError) {
             return (
                 <div className="min-h-screen flex items-center justify-center bg-background p-4">
