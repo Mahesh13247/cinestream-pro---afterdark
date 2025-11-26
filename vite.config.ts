@@ -27,7 +27,7 @@ export default defineConfig(({ mode }) => {
           manualChunks: {
             vendor: ['react', 'react-dom', 'react-router-dom', 'framer-motion'],
             ui: ['lucide-react', 'react-icons'],
-            utils: ['axios', 'date-fns']
+            utils: ['axios']
           }
         }
       }
