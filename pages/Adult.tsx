@@ -330,7 +330,7 @@ const Adult = () => {
                 placeholder="Search videos..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full rounded-xl pl-12 pr-4 py-3 focus:outline-none focus:border-secondary/50 transition-all bg-input-bg border border-input-border text-text"
+                className="w-full rounded-xl pl-12 pr-4 py-3 focus:outline-none focus:border-secondary/50 transition-all bg-input-bg border border-input-border text-black"
               />
             </div>
             <button
