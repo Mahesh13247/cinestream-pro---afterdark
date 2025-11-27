@@ -54,10 +54,115 @@
     --color-hero-text-muted: #d1d5db;
 }
 
+/* ============================================
+   GLOBAL SMOOTH SCROLLING & PERFORMANCE
+   ============================================ */
+
+/* Universal Performance Optimizations */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    overflow-x: hidden;
+}
+
 body {
     background-color: var(--color-background);
     color: var(--color-text);
     transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overscroll-behavior-y: none;
+}
+
+/* Hardware Acceleration for Smooth Animations */
+.transform-gpu,
+img,
+video,
+[class*="animate-"] {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+}
+
+/* Smooth Transitions for All Interactive Elements */
+a,
+button,
+input,
+textarea,
+select,
+[role="button"],
+[class*="card"],
+[class*="Card"] {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+/* Enhanced Hover States with GPU Acceleration */
+@media (hover: hover) and (pointer: fine) {
+
+    a:hover,
+    button:hover,
+    [role="button"]:hover {
+        transform: translateZ(0) scale(1.02);
+    }
+}
+
+/* ============================================
+   MOBILE TOUCH OPTIMIZATIONS
+   ============================================ */
+
+@media (hover: none) and (pointer: coarse) {
+
+    /* iOS Momentum Scrolling */
+    *,
+    html,
+    body {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+
+    /* Smooth Touch Interactions */
+    button,
+    a,
+    [role="button"] {
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+        cursor: pointer;
+    }
+
+    /* Remove Hover Effects on Touch Devices */
+    a:hover,
+    button:hover,
+    [role="button"]:hover {
+        transform: translateZ(0);
+    }
+
+    /* Active State for Touch Feedback */
+    a:active,
+    button:active,
+    [role="button"]:active {
+        transform: translateZ(0) scale(0.98);
+        opacity: 0.9;
+        transition: all 0.1s ease;
+    }
+
+    /* Prevent Overscroll Bounce */
+    body {
+        overscroll-behavior: none;
+        overscroll-behavior-y: none;
+    }
 }
 
 /* Custom Scrollbar Utilities */

@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { tmdbApi } from '../services/api';
 import { MovieDetails } from '../types';
-import { Star, Calendar, Clock, Play, Globe, Sparkles } from 'lucide-react';
+import { Star, Calendar, Clock, Play, Globe, Sparkles, ArrowLeft } from 'lucide-react';
 
 interface DetailsProps {
   type: 'movie' | 'tv';
 }
 
 const Details: React.FC<DetailsProps> = ({ type }) => {
+  const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [movie, setMovie] = useState<MovieDetails | null>(null);
   const [loading, setLoading] = useState(true);
@@ -49,6 +50,15 @@ const Details: React.FC<DetailsProps> = ({ type }) => {
 
   return (
     <div className="min-h-screen bg-background pb-20">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate(-1)}
+        className="fixed top-20 left-4 z-40 p-3 bg-black/50 backdrop-blur-md border border-white/10 rounded-full text-white hover:bg-primary hover:text-black transition-all duration-300 group shadow-lg"
+        aria-label="Go Back"
+      >
+        <ArrowLeft size={24} className="group-hover:-translate-x-1 transition-transform" />
+      </button>
+
       {/* Backdrop Header */}
       <div className="relative h-[50vh] lg:h-[60vh]">
         <div className="absolute inset-0">

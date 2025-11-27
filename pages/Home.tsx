@@ -220,9 +220,6 @@ const Home = () => {
                   <ContinueWatchingCard key={movie.id} movie={movie} onRemove={removeItem} />
                 ))}
               </div>
-
-              {/* Gradient Fade on Mobile Scroll */}
-              <div className="md:hidden absolute top-0 right-0 bottom-0 w-16 bg-gradient-to-l from-background to-transparent pointer-events-none" />
             </div>
           </section>
         )}
