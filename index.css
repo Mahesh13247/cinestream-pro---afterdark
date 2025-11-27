@@ -54,13 +54,82 @@
   --color-hero-text-muted: #d1d5db;
 }
 
+/* ===== SMOOTH SCROLLING OPTIMIZATIONS ===== */
+
+/* Enable smooth scrolling globally */
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-text);
   transition: background-color 0.3s ease, color 0.3s ease;
+  /* Enable smooth momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  /* Improve scrolling performance */
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Prevent overscroll bounce on mobile */
+  overscroll-behavior-y: contain;
 }
 
-/* Custom Scrollbar Utilities */
+/* Smooth scrolling for all scrollable containers */
+* {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Optimize root element scrolling */
+#root {
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  /* Hardware acceleration for better performance */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Mobile-specific touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    /* Remove tap highlight on mobile */
+    -webkit-tap-highlight-color: transparent;
+    /* Disable callout on long press */
+    -webkit-touch-callout: none;
+    /* Prevent text selection on touch */
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Allow text selection for inputs and text areas */
+  input,
+  textarea,
+  [contenteditable] {
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  body {
+    /* Prevent overscroll bounce */
+    overscroll-behavior-y: none;
+    /* Improve touch scrolling */
+    touch-action: pan-y;
+  }
+
+  /* Optimize scrollable containers on mobile */
+  .overflow-auto,
+  .overflow-y-auto,
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* ===== CUSTOM SCROLLBAR UTILITIES ===== */
+
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -97,7 +166,8 @@ body {
   background: rgba(255, 0, 51, 0.7);
 }
 
-/* Smooth Animations */
+/* ===== SMOOTH ANIMATIONS ===== */
+
 @keyframes fadeIn {
   from {
     opacity: 0;
