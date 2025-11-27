@@ -24,7 +24,6 @@ import { initializeProviders } from './providers';
 import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 import LockScreen from './components/LockScreen';
-import ScrollToTop from './components/ScrollToTop';
 
 // Create React Query client
 const queryClient = new QueryClient({
@@ -230,7 +229,6 @@ const App = () => {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <HashRouter>
-          <ScrollToTop />
           <AuthProvider>
             <ThemeProvider>
               <AppRoutes />

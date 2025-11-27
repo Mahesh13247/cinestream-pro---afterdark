@@ -52,7 +52,7 @@ const History = () => {
                                         e.stopPropagation();
                                         removeFromHistory(item.id);
                                     }}
-                                    className="absolute top-2 right-2 z-20 w-8 h-8 bg-black/80 hover:bg-red-500 rounded-full flex items-center justify-center transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 border border-white/20 hover:border-red-500"
+                                    className="absolute top-2 right-2 z-20 w-8 h-8 bg-black/80 hover:bg-red-500 rounded-full flex items-center justify-center transition-all opacity-0 group-hover:opacity-100 border border-white/20 hover:border-red-500"
                                     title="Remove from History"
                                 >
                                     <Trash2 size={14} className="text-white" />
