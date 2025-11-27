@@ -169,46 +169,51 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden absolute top-16 left-0 w-full bg-background border-b border-white/10 p-4 flex flex-col gap-4 shadow-2xl animate-slide-up">
+        <div className="md:hidden absolute top-16 left-0 w-full bg-[#FFC107] rounded-b-[3rem] p-5 flex flex-col gap-4 shadow-2xl animate-slide-up z-50">
           <form onSubmit={handleSearch} className="relative w-full">
-            <Search className="absolute left-3 top-2.5 w-4 h-4 text-text-muted" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
             <input
               type="text"
               placeholder="Search..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-surface border border-white/10 rounded-lg py-2 pl-9 pr-4 text-sm text-text placeholder-text-muted"
+              className="w-full bg-[#1a1a1a] rounded-xl py-3 pl-10 pr-4 text-sm text-red-500 placeholder-gray-500 focus:outline-none border-none"
             />
           </form>
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="text-base font-medium text-text-muted hover:text-primary py-2 border-b border-white/5"
-            >
-              {link.name}
-            </Link>
-          ))}
+
+          <div className="flex flex-col gap-1">
+            {navLinks.map((link) => (
+              <Link
+                key={link.path}
+                to={link.path}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="text-lg font-medium text-black hover:text-white py-2 px-2 transition-colors"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
+
           {isAdmin && (
             <Link
               to="/admin-dashboard"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="text-base font-medium text-purple-400 hover:text-purple-300 py-2 border-b border-white/5 flex items-center gap-2"
+              className="text-lg font-medium text-red-600 hover:text-red-700 py-2 px-2 flex items-center gap-2 transition-colors"
             >
-              <Shield className="w-4 h-4" /> Admin Panel
+              <Shield className="w-5 h-5" /> Admin Panel
             </Link>
           )}
+
           {user && (
-            <div className="pt-2 border-t border-white/10">
+            <div className="mt-2 pt-2">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-text-muted" />
-                  <span className="text-sm text-text">{user.username}</span>
+                <div className="flex items-center gap-2 text-red-600 font-medium px-2">
+                  <User className="w-5 h-5" />
+                  <span className="text-base">{user.username}</span>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-3 py-1.5 bg-red-500/20 hover:bg-red-500/30 text-red-400 rounded-lg transition"
+                  className="flex items-center gap-2 px-4 py-2 bg-black/10 hover:bg-black/20 text-black rounded-lg transition font-medium"
                 >
                   <LogOut className="w-4 h-4" />
                   <span className="text-sm">Logout</span>
