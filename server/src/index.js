@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { initDatabase } from './config/database.js';
+import { initDatabase } from './config/postgres.js';
 import { UserModel } from './models/User.js';
 import { cleanExpiredTokens } from './utils/jwt.js';
 import { securityHeaders, apiLimiter, sanitizeInput } from './middleware/security.js';

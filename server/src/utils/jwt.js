@@ -1,9 +1,10 @@
 import jwt from 'jsonwebtoken';
-import { readDB, writeDB } from '../config/database.js';
+import { query } from '../config/postgres.js';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret-key-change-in-production';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
-const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key-change-in-production';
+const JWT_EXPIRES_IN = '15m';
+const JWT_REFRESH_EXPIRES_IN = '7d';
 
 // Generate access token
 export const generateAccessToken = (user) => {
@@ -25,23 +26,27 @@ export const generateRefreshToken = (user) => {
             id: user.id,
             username: user.username
         },
-        JWT_SECRET,
+        JWT_REFRESH_SECRET,
         { expiresIn: JWT_REFRESH_EXPIRES_IN }
     );
 };
 
-// Verify token
-export const verifyToken = (token) => {
+// Verify access token
+export const verifyAccessToken = (token) => {
     try {
         return jwt.verify(token, JWT_SECRET);
     } catch (error) {
-        throw new Error('Invalid or expired token');
+        return null;
     }
 };
 
-// Decode token without verification (for blacklist check)
-export const decodeToken = (token) => {
-    return jwt.decode(token);
+// Verify refresh token
+export const verifyRefreshToken = (token) => {
+    try {
+        return jwt.verify(token, JWT_REFRESH_SECRET);
+    } catch (error) {
+        return null;
+    }
 };
 
 // Add token to blacklist
@@ -50,14 +55,12 @@ export const blacklistToken = async (token) => {
         const decoded = jwt.decode(token);
         if (!decoded || !decoded.exp) return false;
 
-        const db = await readDB();
-        const expiresAt = new Date(decoded.exp * 1000).toISOString();
+        const expiresAt = new Date(decoded.exp * 1000);
 
-        // Check if token already blacklisted
-        if (!db.tokenBlacklist.find(t => t.token === token)) {
-            db.tokenBlacklist.push({ token, expiresAt, createdAt: new Date().toISOString() });
-            await writeDB(db);
-        }
+        await query(
+            'INSERT INTO token_blacklist (token, expires_at) VALUES ($1, $2)',
+            [token, expiresAt]
+        );
 
         return true;
     } catch (error) {
@@ -68,24 +71,29 @@ export const blacklistToken = async (token) => {
 
 // Check if token is blacklisted
 export const isTokenBlacklisted = async (token) => {
-    const db = await readDB();
-    return !!db.tokenBlacklist.find(t => t.token === token);
+    try {
+        const result = await query(
+            'SELECT id FROM token_blacklist WHERE token = $1',
+            [token]
+        );
+
+        return result.rows.length > 0;
+    } catch (error) {
+        console.error('Error checking token blacklist:', error);
+        return false;
+    }
 };
 
-// Clean expired tokens from blacklist (run periodically)
+// Clean expired tokens from blacklist
 export const cleanExpiredTokens = async () => {
-    const db = await readDB();
-    const now = new Date();
-    const initialLength = db.tokenBlacklist.length;
+    try {
+        const result = await query(
+            'DELETE FROM token_blacklist WHERE expires_at < CURRENT_TIMESTAMP'
+        );
 
-    db.tokenBlacklist = db.tokenBlacklist.filter(t => {
-        return new Date(t.expiresAt) > now;
-    });
-
-    const removed = initialLength - db.tokenBlacklist.length;
-    if (removed > 0) {
-        await writeDB(db);
+        return result.rowCount;
+    } catch (error) {
+        console.error('Error cleaning expired tokens:', error);
+        return 0;
     }
-
-    return removed;
 };

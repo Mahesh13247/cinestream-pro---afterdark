@@ -1,144 +1,145 @@
 import bcrypt from 'bcryptjs';
-import { readDB, writeDB } from '../config/database.js';
+import { query } from '../config/postgres.js';
 
 const SALT_ROUNDS = 12;
 
 export const UserModel = {
     // Create a new user
     create: async (username, password, role = 'user') => {
-        const db = await readDB();
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
-        const newUser = {
-            id: ++db.lastUserId,
-            username,
-            password: hashedPassword,
-            role,
-            isBlocked: 0,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-            lastLogin: null
-        };
+        const result = await query(
+            `INSERT INTO users (username, password, role, is_blocked, created_at, updated_at)
+             VALUES ($1, $2, $3, 0, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+             RETURNING id, username, role, is_blocked, created_at, updated_at, last_login`,
+            [username, hashedPassword, role]
+        );
 
-        db.users.push(newUser);
-        await writeDB(db);
-
-        const { password: _, ...userWithoutPassword } = newUser;
-        return userWithoutPassword;
+        return result.rows[0];
     },
 
     // Find user by username
     findByUsername: async (username) => {
-        const db = await readDB();
-        return db.users.find(u => u.username === username);
+        const result = await query(
+            'SELECT * FROM users WHERE username = $1',
+            [username]
+        );
+        return result.rows[0];
     },
 
     // Find user by ID
     findById: async (id) => {
-        const db = await readDB();
-        return db.users.find(u => u.id === id);
+        const result = await query(
+            'SELECT * FROM users WHERE id = $1',
+            [id]
+        );
+        return result.rows[0];
     },
 
     // Get all users (exclude password)
     findAll: async (limit = 100, offset = 0) => {
-        const db = await readDB();
-        return db.users
-            .slice(offset, offset + limit)
-            .map(({ password, ...user }) => user);
+        const result = await query(
+            `SELECT id, username, role, is_blocked, created_at, updated_at, last_login
+             FROM users
+             ORDER BY id ASC
+             LIMIT $1 OFFSET $2`,
+            [limit, offset]
+        );
+        return result.rows;
     },
 
     // Update user
     update: async (id, updates) => {
-        const db = await readDB();
-        const userIndex = db.users.findIndex(u => u.id === id);
-
-        if (userIndex === -1) return false;
-
-        const allowedFields = ['username', 'role', 'isBlocked'];
+        const allowedFields = ['username', 'role', 'is_blocked'];
         const filteredUpdates = {};
 
         Object.keys(updates).forEach(key => {
-            if (allowedFields.includes(key)) {
-                filteredUpdates[key] = updates[key];
+            // Convert camelCase to snake_case for database
+            const dbKey = key === 'isBlocked' ? 'is_blocked' : key;
+            if (allowedFields.includes(dbKey)) {
+                filteredUpdates[dbKey] = updates[key];
             }
         });
 
         if (Object.keys(filteredUpdates).length === 0) return false;
 
-        db.users[userIndex] = {
-            ...db.users[userIndex],
-            ...filteredUpdates,
-            updatedAt: new Date().toISOString()
-        };
+        // Build dynamic UPDATE query
+        const setClause = Object.keys(filteredUpdates)
+            .map((key, index) => `${key} = $${index + 2}`)
+            .join(', ');
 
-        await writeDB(db);
-        return true;
+        const values = [id, ...Object.values(filteredUpdates)];
+
+        const result = await query(
+            `UPDATE users 
+             SET ${setClause}, updated_at = CURRENT_TIMESTAMP
+             WHERE id = $1
+             RETURNING id`,
+            values
+        );
+
+        return result.rowCount > 0;
     },
 
     // Update password
     updatePassword: async (id, newPassword) => {
-        const db = await readDB();
-        const userIndex = db.users.findIndex(u => u.id === id);
-
-        if (userIndex === -1) return false;
-
         const hashedPassword = await bcrypt.hash(newPassword, SALT_ROUNDS);
-        db.users[userIndex].password = hashedPassword;
-        db.users[userIndex].updatedAt = new Date().toISOString();
 
-        await writeDB(db);
-        return true;
+        const result = await query(
+            `UPDATE users 
+             SET password = $1, updated_at = CURRENT_TIMESTAMP
+             WHERE id = $2
+             RETURNING id`,
+            [hashedPassword, id]
+        );
+
+        return result.rowCount > 0;
     },
 
     // Delete user
     delete: async (id) => {
-        const db = await readDB();
-        const initialLength = db.users.length;
-        db.users = db.users.filter(u => u.id !== id);
+        const result = await query(
+            'DELETE FROM users WHERE id = $1',
+            [id]
+        );
 
-        if (db.users.length === initialLength) return false;
-
-        await writeDB(db);
-        return true;
+        return result.rowCount > 0;
     },
 
     // Block user
     block: async (id) => {
-        const db = await readDB();
-        const userIndex = db.users.findIndex(u => u.id === id);
+        const result = await query(
+            `UPDATE users 
+             SET is_blocked = 1, updated_at = CURRENT_TIMESTAMP
+             WHERE id = $1
+             RETURNING id`,
+            [id]
+        );
 
-        if (userIndex === -1) return false;
-
-        db.users[userIndex].isBlocked = 1;
-        db.users[userIndex].updatedAt = new Date().toISOString();
-
-        await writeDB(db);
-        return true;
+        return result.rowCount > 0;
     },
 
     // Unblock user
     unblock: async (id) => {
-        const db = await readDB();
-        const userIndex = db.users.findIndex(u => u.id === id);
+        const result = await query(
+            `UPDATE users 
+             SET is_blocked = 0, updated_at = CURRENT_TIMESTAMP
+             WHERE id = $1
+             RETURNING id`,
+            [id]
+        );
 
-        if (userIndex === -1) return false;
-
-        db.users[userIndex].isBlocked = 0;
-        db.users[userIndex].updatedAt = new Date().toISOString();
-
-        await writeDB(db);
-        return true;
+        return result.rowCount > 0;
     },
 
     // Update last login
     updateLastLogin: async (id) => {
-        const db = await readDB();
-        const userIndex = db.users.findIndex(u => u.id === id);
-
-        if (userIndex !== -1) {
-            db.users[userIndex].lastLogin = new Date().toISOString();
-            await writeDB(db);
-        }
+        await query(
+            `UPDATE users 
+             SET last_login = CURRENT_TIMESTAMP
+             WHERE id = $1`,
+            [id]
+        );
     },
 
     // Compare password
@@ -150,12 +151,19 @@ export const UserModel = {
     sanitize: (user) => {
         if (!user) return null;
         const { password, ...sanitizedUser } = user;
-        return sanitizedUser;
+        // Convert snake_case to camelCase for API response
+        return {
+            ...sanitizedUser,
+            isBlocked: sanitizedUser.is_blocked,
+            createdAt: sanitizedUser.created_at,
+            updatedAt: sanitizedUser.updated_at,
+            lastLogin: sanitizedUser.last_login
+        };
     },
 
     // Count total users
     count: async () => {
-        const db = await readDB();
-        return db.users.length;
+        const result = await query('SELECT COUNT(*) FROM users');
+        return parseInt(result.rows[0].count);
     }
 };
