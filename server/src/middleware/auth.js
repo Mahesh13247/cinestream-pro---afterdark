@@ -1,4 +1,4 @@
-import { verifyToken, isTokenBlacklisted } from '../utils/jwt.js';
+import { verifyAccessToken, isTokenBlacklisted } from '../utils/jwt.js';
 import { UserModel } from '../models/User.js';
 
 // Authenticate JWT token
@@ -25,7 +25,7 @@ export const authenticate = async (req, res, next) => {
         }
 
         // Verify token
-        const decoded = verifyToken(token);
+        const decoded = verifyAccessToken(token);
 
         // Get user from database
         const user = await UserModel.findById(decoded.id);
