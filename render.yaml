@@ -1,11 +1,11 @@
-services:
+databases:
   # PostgreSQL Database
-  - type: pserv
-    name: cinestream-database
-    env: docker
+  - name: cinestream-database
+    databaseName: cinestream_db
+    user: cinestream_user
     plan: free
-    ipAllowList: []
 
+services:
   # The Backend Server
   - type: web
     name: cinestream-auth-server
@@ -38,4 +38,3 @@ services:
   #   env: static
   #   buildCommand: npm install && npm run build
   #   staticPublishPath: ./dist
-
