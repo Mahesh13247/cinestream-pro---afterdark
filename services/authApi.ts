@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.PROD
-    ? 'https://cinestream-pro-afterdark.onrender.com'
+    ? 'https://cinestream-auth-server.onrender.com'
     : (import.meta.env.VITE_API_URL || 'http://localhost:5000');
 
 
