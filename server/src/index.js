@@ -57,7 +57,11 @@ setInterval(async () => {
 
 // Middleware
 app.use(cors({
-    origin: FRONTEND_URL,
+    origin: [
+        'http://localhost:3000',
+        'https://mahesh13247.github.io',
+        process.env.FRONTEND_URL
+    ].filter(Boolean),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
