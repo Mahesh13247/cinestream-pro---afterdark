@@ -29,12 +29,14 @@ authClient.interceptors.request.use(
 authClient.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response?.status === 401) {
+        // Only redirect if 401 AND not a login request
+        if (error.response?.status === 401 && !error.config.url?.includes('/login')) {
             // Token expired or invalid
             sessionStorage.removeItem('accessToken');
             sessionStorage.removeItem('refreshToken');
             sessionStorage.removeItem('user');
-            window.location.href = '/#/login';
+            // Use hash navigation to support GitHub Pages subpath
+            window.location.hash = '/login';
         }
         return Promise.reject(error);
     }
