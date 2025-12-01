@@ -142,6 +142,146 @@ export const PROVIDER_CONFIGS = {
         'https://www.embedv.net/embed/{type}/{id}',
     ],
 
+    // NEW SOURCES - Added from 2024 Internet Research
+
+    // StreamAPI - Next-gen streaming API with auto-updating links
+    streamapi: [
+        'https://streamapi.in/embed/{type}/{id}',
+        'https://api.streamapi.in/embed/{type}/{id}',
+    ],
+
+    // VidBinge - High-quality streaming with 1080p support
+    vidbinge2: [
+        'https://vidbinge.dev/embed/{type}/{id}',
+    ],
+
+    // Flixhq - Popular alternative with multiple servers
+    flixhq: [
+        'https://flixhq.to/embed/{type}/{id}',
+        'https://flixhq.click/embed/{type}/{id}',
+    ],
+
+    // Rive - Fast streaming with good uptime
+    rive: [
+        'https://rive.watch/embed/{type}/{id}',
+    ],
+
+    // Showbox - Reliable embed source
+    showbox: [
+        'https://www.showbox.media/embed/{type}/{id}',
+    ],
+
+    // Gomovies - Well-established provider
+    gomovies: [
+        'https://gomovies.sx/embed/{type}/{id}',
+    ],
+
+    // Primewire - Multiple quality options
+    primewire: [
+        'https://www.primewire.tf/embed/{type}/{id}',
+    ],
+
+    // Moviesjoy - Clean player interface
+    moviesjoy: [
+        'https://moviesjoy.to/embed/{type}/{id}',
+    ],
+
+    // Fmovies - Large content library
+    fmovies: [
+        'https://fmovies.to/embed/{type}/{id}',
+        'https://fmovies24.to/embed/{type}/{id}',
+    ],
+
+    // Putlocker - Classic streaming source
+    putlocker: [
+        'https://ww7.putlocker.vip/embed/{type}/{id}',
+    ],
+
+    // Solarmovie - Fast loading times
+    solarmovie: [
+        'https://solarmovie.to/embed/{type}/{id}',
+    ],
+
+    // Yesmovies - Good mobile support
+    yesmovies: [
+        'https://yesmovies.ag/embed/{type}/{id}',
+    ],
+
+    // Lookmovie - HD quality streams
+    lookmovie: [
+        'https://lookmovie.ag/embed/{type}/{id}',
+        'https://lookmovie2.to/embed/{type}/{id}',
+    ],
+
+    // Soap2day - Popular alternative
+    soap2day: [
+        'https://soap2day.tf/embed/{type}/{id}',
+    ],
+
+
+    // Hdtoday - Recent addition with good quality
+    hdtoday: [
+        'https://hdtoday.cc/embed/{type}/{id}',
+        'https://hdtoday.to/embed/{type}/{id}',
+    ],
+
+    // ADDITIONAL SOURCES - 2024/2025 Research
+
+    // VidPlay - Popular streaming player
+    vidplay: [
+        'https://vidplay.online/embed/{type}/{id}',
+        'https://vidplay.site/embed/{type}/{id}',
+    ],
+
+    // EmbedPlay - Alternative player
+    embedplay: [
+        'https://embedplay.net/embed/{type}/{id}',
+    ],
+
+    // Vidcloud - Cloud-based streaming
+    vidcloud: [
+        'https://vidcloud.icu/embed/{type}/{id}',
+        'https://vidcloud9.com/embed/{type}/{id}',
+    ],
+
+    // Doodstream - Fast streaming
+    doodstream: [
+        'https://dood.to/e/{id}',
+        'https://doodstream.com/e/{id}',
+    ],
+
+    // Upstream - Reliable source
+    upstream: [
+        'https://upstream.to/embed/{id}',
+    ],
+
+    // Mixdrop - Popular alternative
+    mixdrop: [
+        'https://mixdrop.co/e/{id}',
+        'https://mixdrop.to/e/{id}',
+    ],
+
+    // Filemoon - File hosting with streaming
+    filemoon: [
+        'https://filemoon.sx/e/{id}',
+    ],
+
+    // Streamwish - Wishfast alternative
+    streamwish: [
+        'https://streamwish.to/e/{id}',
+        'https://awish.pro/e/{id}',
+    ],
+
+    // Voe - Video hosting
+    voe: [
+        'https://voe.sx/e/{id}',
+    ],
+
+    // Streamhub - Hub for streams
+    streamhub: [
+        'https://streamhub.to/e/{id}',
+    ],
+
     // Backup sources
     streamtape: [
         'https://streamtape.com/e/{id}',
