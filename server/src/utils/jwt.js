@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { query } from '../config/postgres.js';
+import { readDB, writeDB } from '../config/database.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || 'your-refresh-secret-key-change-in-production';
@@ -55,13 +55,15 @@ export const blacklistToken = async (token) => {
         const decoded = jwt.decode(token);
         if (!decoded || !decoded.exp) return false;
 
-        const expiresAt = new Date(decoded.exp * 1000);
+        const db = await readDB();
+        const expiresAt = new Date(decoded.exp * 1000).toISOString();
 
-        await query(
-            'INSERT INTO token_blacklist (token, expires_at) VALUES ($1, $2)',
-            [token, expiresAt]
-        );
+        db.tokenBlacklist.push({
+            token,
+            expiresAt
+        });
 
+        await writeDB(db);
         return true;
     } catch (error) {
         console.error('Error blacklisting token:', error);
@@ -72,12 +74,8 @@ export const blacklistToken = async (token) => {
 // Check if token is blacklisted
 export const isTokenBlacklisted = async (token) => {
     try {
-        const result = await query(
-            'SELECT id FROM token_blacklist WHERE token = $1',
-            [token]
-        );
-
-        return result.rows.length > 0;
+        const db = await readDB();
+        return db.tokenBlacklist.some(t => t.token === token);
     } catch (error) {
         console.error('Error checking token blacklist:', error);
         return false;
@@ -87,11 +85,17 @@ export const isTokenBlacklisted = async (token) => {
 // Clean expired tokens from blacklist
 export const cleanExpiredTokens = async () => {
     try {
-        const result = await query(
-            'DELETE FROM token_blacklist WHERE expires_at < CURRENT_TIMESTAMP'
-        );
+        const db = await readDB();
+        const now = new Date().toISOString();
+        const initialLength = db.tokenBlacklist.length;
 
-        return result.rowCount;
+        db.tokenBlacklist = db.tokenBlacklist.filter(t => t.expiresAt > now);
+
+        if (db.tokenBlacklist.length !== initialLength) {
+            await writeDB(db);
+            return initialLength - db.tokenBlacklist.length;
+        }
+        return 0;
     } catch (error) {
         console.error('Error cleaning expired tokens:', error);
         return 0;

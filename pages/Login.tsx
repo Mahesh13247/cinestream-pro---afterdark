@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { Navigate } from 'react-router-dom';
 import { Lock, User, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 const Login: React.FC = () => {
@@ -23,20 +24,17 @@ const Login: React.FC = () => {
         try {
             await login(username, password);
             // Redirect is handled in AuthContext
-        } catch (err) {
-            const error = err as Error;
-            setError(error.message || 'Login failed. Please try again.');
+        } catch (err: any) {
+            setError(err.message || 'Login failed. Please try again.');
         } finally {
             setLoading(false);
         }
     };
 
     // Redirect if already authenticated
-    useEffect(() => {
-        if (isAuthenticated) {
-            window.location.hash = '/';
-        }
-    }, [isAuthenticated]);
+    if (isAuthenticated) {
+        return <Navigate to="/" replace />;
+    }
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 via-red-900 to-black px-4">
@@ -83,7 +81,7 @@ const Login: React.FC = () => {
                                         type="text"
                                         value={username}
                                         onChange={(e) => setUsername(e.target.value)}
-                                        className="w-full pl-10 pr-4 py-3 bg-white border border-white/10 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                        className="w-full pl-10 pr-4 py-3 bg-background border border-white/10 rounded-lg text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
                                         placeholder="Enter your username"
                                         required
                                         autoComplete="username"
@@ -106,7 +104,7 @@ const Login: React.FC = () => {
                                         type={showPassword ? 'text' : 'password'}
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full pl-10 pr-12 py-3 bg-white border border-white/10 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                        className="w-full pl-10 pr-12 py-3 bg-background border border-white/10 rounded-lg text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
                                         placeholder="Enter your password"
                                         required
                                         autoComplete="current-password"

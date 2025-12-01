@@ -1,6 +1,5 @@
 {
   "name": "cinestream-pro-&-afterdark",
-  "homepage": "https://Mahesh13247.github.io/cinestream-pro---afterdark/",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,9 +10,7 @@
     "start:server": "cd server && npm start",
     "start:all": "concurrently \"npm run preview\" \"npm run start:server\" --names \"frontend,backend\" --prefix-colors \"cyan,magenta\"",
     "build": "vite build",
-    "preview": "vite preview",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@google/genai": "^1.30.0",
@@ -26,7 +23,6 @@
     "express": "^5.1.0",
     "express-rate-limit": "^8.2.1",
     "framer-motion": "^12.23.24",
-    "gh-pages": "^6.3.0",
     "graphql": "^16.12.0",
     "graphql-request": "^7.3.4",
     "hls.js": "^1.6.15",

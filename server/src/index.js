@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { initDatabase } from './config/postgres.js';
+import { initDatabase } from './config/database.js';
 import { UserModel } from './models/User.js';
 import { cleanExpiredTokens } from './utils/jwt.js';
 import { securityHeaders, apiLimiter, sanitizeInput } from './middleware/security.js';
@@ -13,9 +13,6 @@ import adminRoutes from './routes/admin.js';
 dotenv.config();
 
 const app = express();
-// Trust proxy is required for rate limiting behind load balancers (like Render)
-app.set('trust proxy', 1);
-
 const PORT = process.env.PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 
@@ -26,25 +23,16 @@ initDatabase();
 const initializeDefaultAdmin = async () => {
     try {
         const adminUsername = process.env.ADMIN_USERNAME || 'admin';
-        const adminPassword = process.env.ADMIN_PASSWORD || 'maheshisagoodboy';
+        const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@123456';
 
         const existingAdmin = await UserModel.findByUsername(adminUsername);
-
         if (!existingAdmin) {
-            // Create new admin if not exists
             await UserModel.create(adminUsername, adminPassword, 'admin');
             console.log(`✓ Default admin user created: ${adminUsername}`);
             console.log(`⚠️  IMPORTANT: Change the default password immediately!`);
-        } else {
-            // Check if password needs update
-            const isPasswordMatch = await UserModel.comparePassword(adminPassword, existingAdmin.password);
-            if (!isPasswordMatch) {
-                await UserModel.updatePassword(existingAdmin.id, adminPassword);
-                console.log(`✓ Admin password updated to match environment configuration`);
-            }
         }
     } catch (error) {
-        console.error('Error initializing default admin:', error);
+        console.error('Error creating default admin:', error);
     }
 };
 
@@ -60,11 +48,7 @@ setInterval(async () => {
 
 // Middleware
 app.use(cors({
-    origin: [
-        'http://localhost:3000',
-        'https://mahesh13247.github.io',
-        process.env.FRONTEND_URL
-    ].filter(Boolean),
+    origin: FRONTEND_URL,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -115,7 +99,7 @@ app.use((err, req, res, next) => {
 });
 
 // Start server
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, () => {
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log(`🚀 Auth Server running on port ${PORT}`);
     console.log(`🌐 Frontend URL: ${FRONTEND_URL}`);

@@ -11,7 +11,7 @@ import { prefetchProviderUrls } from './utils/getBaseUrl';
 // Register all providers
 export async function initializeProviders() {
     if (import.meta.env.DEV) {
-
+        console.log('🚀 Initializing providers...');
     }
 
     // Prefetch provider URLs for better performance
@@ -21,7 +21,7 @@ export async function initializeProviders() {
 
     // Register existing universal providers
     if (import.meta.env.DEV) {
-
+        console.log(`📦 Registering ${AllProviders.length} existing providers...`);
     }
     AllProviders.forEach(provider => {
         providerManager.register(provider);
@@ -29,18 +29,20 @@ export async function initializeProviders() {
 
     // Register new providers (Embed + Anime)
     if (import.meta.env.DEV) {
-
+        console.log(`📦 Registering ${AllNewProviders.length} new providers...`);
     }
     AllNewProviders.forEach(provider => {
         providerManager.register(provider);
         if (import.meta.env.DEV) {
-
+            console.log(`  ✅ Registered: ${provider.config.name}`);
         }
     });
 
     const stats = providerManager.getStats();
     if (import.meta.env.DEV) {
-
+        console.log('🎬 Providers initialized:', stats);
+        console.log(`✅ ${stats.enabled} providers enabled`);
+        console.log(`📊 Total provider IDs available: ${AllProviderIds.length}`);
     }
 }
 

@@ -107,7 +107,7 @@ const Actor = () => {
 
                         {/* Content Grid */}
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-                            {(activeTab === 'movies' ? movies : tvShows).map((item: Movie) => (
+                            {(activeTab === 'movies' ? movies : tvShows).map((item: any) => (
                                 <div key={item.id} className="transform transition-transform hover:-translate-y-1">
                                     <Link
                                         to={`/${activeTab === 'movies' ? 'movies' : 'webseries'}/${item.id}`}

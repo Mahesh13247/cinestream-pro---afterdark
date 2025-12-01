@@ -104,7 +104,7 @@ export function clearUrlCache(): void {
 export async function prefetchProviderUrls(): Promise<void> {
     try {
         await getAllProviderUrls();
-
+        console.log('✅ Provider URLs prefetched successfully');
     } catch (error) {
         console.error('Failed to prefetch provider URLs:', error);
     }

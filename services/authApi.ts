@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.PROD
-    ? 'https://cinestream-auth-server.onrender.com'
-    : (import.meta.env.VITE_API_URL || 'http://localhost:5000');
-
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 // Create axios instance
 const authClient = axios.create({
@@ -29,14 +26,12 @@ authClient.interceptors.request.use(
 authClient.interceptors.response.use(
     (response) => response,
     (error) => {
-        // Only redirect if 401 AND not a login request
-        if (error.response?.status === 401 && !error.config.url?.includes('/login')) {
+        if (error.response?.status === 401) {
             // Token expired or invalid
             sessionStorage.removeItem('accessToken');
             sessionStorage.removeItem('refreshToken');
             sessionStorage.removeItem('user');
-            // Use hash navigation to support GitHub Pages subpath
-            window.location.hash = '/login';
+            window.location.href = '/#/login';
         }
         return Promise.reject(error);
     }

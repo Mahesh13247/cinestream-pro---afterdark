@@ -67,9 +67,8 @@ const AdminDashboard: React.FC = () => {
                 setNewRole('user');
                 fetchUsers();
             }
-        } catch (error) {
-            const err = error as { response?: { data?: { message?: string } } };
-            showNotification('error', err.response?.data?.message || 'Failed to create user');
+        } catch (error: any) {
+            showNotification('error', error.response?.data?.message || 'Failed to create user');
         }
     };
 
@@ -82,9 +81,8 @@ const AdminDashboard: React.FC = () => {
                 showNotification('success', 'User deleted successfully');
                 fetchUsers();
             }
-        } catch (error) {
-            const err = error as { response?: { data?: { message?: string } } };
-            showNotification('error', err.response?.data?.message || 'Failed to delete user');
+        } catch (error: any) {
+            showNotification('error', error.response?.data?.message || 'Failed to delete user');
         }
     };
 
@@ -98,9 +96,8 @@ const AdminDashboard: React.FC = () => {
                 showNotification('success', isBlocked ? 'User unblocked' : 'User blocked');
                 fetchUsers();
             }
-        } catch (error) {
-            const err = error as { response?: { data?: { message?: string } } };
-            showNotification('error', err.response?.data?.message || 'Failed to update user');
+        } catch (error: any) {
+            showNotification('error', error.response?.data?.message || 'Failed to update user');
         }
     };
 
@@ -116,9 +113,8 @@ const AdminDashboard: React.FC = () => {
                 setResetPassword('');
                 setSelectedUser(null);
             }
-        } catch (error) {
-            const err = error as { response?: { data?: { message?: string } } };
-            showNotification('error', err.response?.data?.message || 'Failed to reset password');
+        } catch (error: any) {
+            showNotification('error', error.response?.data?.message || 'Failed to reset password');
         }
     };
 
@@ -159,33 +155,19 @@ const AdminDashboard: React.FC = () => {
 
             {/* Notification */}
             {notification && (
-                <div className="fixed top-6 right-6 z-50 max-w-md w-full animate-slide-in">
-                    <div className={`flex items-center gap-4 p-4 rounded-xl shadow-2xl backdrop-blur-xl border border-white/10 ${notification.type === 'success'
-                        ? 'bg-surface/90 border-l-4 border-l-green-500'
-                        : 'bg-surface/90 border-l-4 border-l-red-500'
+                <div className={`fixed top-4 right-4 z-50 max-w-md animate-slide-in`}>
+                    <div className={`flex items-start gap-3 p-4 rounded-lg shadow-lg ${notification.type === 'success'
+                        ? 'bg-green-500/20 border border-green-500/50'
+                        : 'bg-red-500/20 border border-red-500/50'
                         }`}>
-                        <div className={`p-2 rounded-full ${notification.type === 'success' ? 'bg-green-500/20' : 'bg-red-500/20'
-                            }`}>
-                            {notification.type === 'success' ? (
-                                <CheckCircle className={`w-5 h-5 ${notification.type === 'success' ? 'text-green-500' : 'text-red-500'
-                                    }`} />
-                            ) : (
-                                <AlertCircle className="w-5 h-5 text-red-500" />
-                            )}
-                        </div>
-                        <div className="flex-1">
-                            <h4 className={`font-semibold ${notification.type === 'success' ? 'text-green-400' : 'text-red-400'
-                                }`}>
-                                {notification.type === 'success' ? 'Success' : 'Error'}
-                            </h4>
-                            <p className="text-text-muted text-sm">{notification.message}</p>
-                        </div>
-                        <button
-                            onClick={() => setNotification(null)}
-                            className="p-1 hover:bg-white/10 rounded-lg transition text-text-muted hover:text-text"
-                        >
-                            <X className="w-4 h-4" />
-                        </button>
+                        {notification.type === 'success' ? (
+                            <CheckCircle className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                        ) : (
+                            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+                        )}
+                        <p className={notification.type === 'success' ? 'text-green-400' : 'text-red-400'}>
+                            {notification.message}
+                        </p>
                     </div>
                 </div>
             )}
@@ -194,41 +176,35 @@ const AdminDashboard: React.FC = () => {
             <div className="w-full max-w-[2000px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 {/* Stats */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div className="bg-surface/50 backdrop-blur-xl rounded-xl p-6 border border-white/10 hover:border-primary/50 transition duration-300">
+                    <div className="bg-surface/50 backdrop-blur-xl rounded-xl p-6 border border-white/10">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-text-muted text-sm font-medium">Total Users</p>
-                                <p className="text-3xl font-bold text-text mt-2">{users.length}</p>
+                                <p className="text-text-muted text-sm">Total Users</p>
+                                <p className="text-3xl font-bold text-text mt-1">{users.length}</p>
                             </div>
-                            <div className="p-3 bg-primary/20 rounded-xl">
-                                <Users className="w-8 h-8 text-primary" />
-                            </div>
+                            <Users className="w-12 h-12 text-primary" />
                         </div>
                     </div>
-                    <div className="bg-surface/50 backdrop-blur-xl rounded-xl p-6 border border-white/10 hover:border-green-500/50 transition duration-300">
+                    <div className="bg-surface/50 backdrop-blur-xl rounded-xl p-6 border border-white/10">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-text-muted text-sm font-medium">Active Users</p>
-                                <p className="text-3xl font-bold text-text mt-2">
+                                <p className="text-text-muted text-sm">Active Users</p>
+                                <p className="text-3xl font-bold text-text mt-1">
                                     {users.filter(u => !u.isBlocked).length}
                                 </p>
                             </div>
-                            <div className="p-3 bg-green-500/20 rounded-xl">
-                                <CheckCircle className="w-8 h-8 text-green-500" />
-                            </div>
+                            <CheckCircle className="w-12 h-12 text-green-500" />
                         </div>
                     </div>
-                    <div className="bg-surface/50 backdrop-blur-xl rounded-xl p-6 border border-white/10 hover:border-red-500/50 transition duration-300">
+                    <div className="bg-surface/50 backdrop-blur-xl rounded-xl p-6 border border-white/10">
                         <div className="flex items-center justify-between">
                             <div>
-                                <p className="text-text-muted text-sm font-medium">Blocked Users</p>
-                                <p className="text-3xl font-bold text-text mt-2">
+                                <p className="text-text-muted text-sm">Blocked Users</p>
+                                <p className="text-3xl font-bold text-text mt-1">
                                     {users.filter(u => u.isBlocked).length}
                                 </p>
                             </div>
-                            <div className="p-3 bg-red-500/20 rounded-xl">
-                                <Lock className="w-8 h-8 text-red-500" />
-                            </div>
+                            <Lock className="w-12 h-12 text-red-500" />
                         </div>
                     </div>
                 </div>
@@ -237,21 +213,21 @@ const AdminDashboard: React.FC = () => {
                 <div className="bg-surface/50 backdrop-blur-xl rounded-xl p-6 border border-white/10 mb-6">
                     <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
                         {/* Search */}
-                        <div className="relative flex-1 w-full sm:max-w-md group">
-                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-primary transition-colors" />
+                        <div className="relative flex-1 w-full sm:max-w-md">
+                            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-text-muted" />
                             <input
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 placeholder="Search users..."
-                                className="w-full pl-10 pr-4 py-3 bg-white border border-white/10 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                                className="w-full pl-10 pr-4 py-2 bg-background border border-white/10 rounded-lg text-text placeholder-text-muted focus:outline-none focus:ring-2 focus:ring-primary"
                             />
                         </div>
 
                         {/* Add User Button */}
                         <button
                             onClick={() => setShowAddModal(true)}
-                            className="flex items-center gap-2 px-6 py-3 bg-primary hover:bg-blue-400 text-black font-bold rounded-xl transition transform hover:scale-105 shadow-lg shadow-primary/20"
+                            className="flex items-center gap-2 px-4 py-2 bg-primary hover:bg-blue-600 text-black font-bold rounded-lg transition transform hover:scale-105"
                         >
                             <UserPlus className="w-5 h-5" />
                             <span>Add User</span>
@@ -260,68 +236,65 @@ const AdminDashboard: React.FC = () => {
                 </div>
 
                 {/* Users Table */}
-                <div className="bg-surface/50 backdrop-blur-xl rounded-xl border border-white/10 overflow-hidden shadow-xl">
+                <div className="bg-surface/50 backdrop-blur-xl rounded-xl border border-white/10 overflow-hidden">
                     {loading ? (
-                        <div className="p-20 text-center">
-                            <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-primary border-t-transparent"></div>
-                            <p className="text-text-muted mt-4 animate-pulse">Loading users...</p>
+                        <div className="p-12 text-center">
+                            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+                            <p className="text-text-muted mt-4">Loading users...</p>
                         </div>
                     ) : filteredUsers.length === 0 ? (
-                        <div className="p-20 text-center">
-                            <div className="w-20 h-20 bg-surface rounded-full flex items-center justify-center mx-auto mb-6">
-                                <Users className="w-10 h-10 text-text-muted" />
-                            </div>
-                            <h3 className="text-xl font-semibold text-text mb-2">No users found</h3>
-                            <p className="text-text-muted">Try adjusting your search query</p>
+                        <div className="p-12 text-center">
+                            <Users className="w-16 h-16 text-text-muted mx-auto mb-4" />
+                            <p className="text-text-muted">No users found</p>
                         </div>
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full">
-                                <thead className="bg-black/20">
+                                <thead className="bg-white/5">
                                     <tr>
-                                        <th className="px-6 py-5 text-left text-xs font-semibold text-text-muted uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
                                             User
                                         </th>
-                                        <th className="px-6 py-5 text-left text-xs font-semibold text-text-muted uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
                                             Role
                                         </th>
-                                        <th className="px-6 py-5 text-left text-xs font-semibold text-text-muted uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
                                             Status
                                         </th>
-                                        <th className="px-6 py-5 text-left text-xs font-semibold text-text-muted uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
                                             Created
                                         </th>
-                                        <th className="px-6 py-5 text-right text-xs font-semibold text-text-muted uppercase tracking-wider">
+                                        <th className="px-6 py-4 text-left text-xs font-medium text-text-muted uppercase tracking-wider">
                                             Actions
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-white/5">
+                                <tbody className="divide-y divide-white/10">
                                     {filteredUsers.map((user) => (
-                                        <tr key={user.id} className="hover:bg-white/5 transition duration-200 group">
+                                        <tr key={user.id} className="hover:bg-white/5 transition">
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center border border-white/10 group-hover:border-primary/50 transition-colors">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="p-2 bg-primary/20 rounded-lg">
                                                         <UserIcon className="w-5 h-5 text-primary" />
                                                     </div>
                                                     <div>
                                                         <p className="text-text font-medium">{user.username}</p>
-                                                        <p className="text-text-muted text-xs">ID: {user.id}</p>
+                                                        <p className="text-text-muted text-sm">ID: {user.id}</p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${user.role === 'admin'
-                                                    ? 'bg-purple-500/10 text-purple-400 border-purple-500/20'
-                                                    : 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${user.role === 'admin'
+                                                    ? 'bg-purple-500/20 text-purple-400'
+                                                    : 'bg-blue-500/20 text-blue-400'
                                                     }`}>
                                                     {user.role}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${user.isBlocked
-                                                    ? 'bg-red-500/10 text-red-400 border-red-500/20'
-                                                    : 'bg-green-500/10 text-green-400 border-green-500/20'
+                                                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${user.isBlocked
+                                                    ? 'bg-red-500/20 text-red-400'
+                                                    : 'bg-green-500/20 text-green-400'
                                                     }`}>
                                                     {user.isBlocked ? 'Blocked' : 'Active'}
                                                 </span>
@@ -329,14 +302,14 @@ const AdminDashboard: React.FC = () => {
                                             <td className="px-6 py-4 whitespace-nowrap text-text-muted text-sm">
                                                 {new Date(user.createdAt).toLocaleDateString()}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-right">
-                                                <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <td className="px-6 py-4 whitespace-nowrap">
+                                                <div className="flex items-center gap-2">
                                                     <button
                                                         onClick={() => handleBlockUser(user.id, user.isBlocked)}
                                                         disabled={user.id === currentUser?.id}
                                                         className={`p-2 rounded-lg transition ${user.isBlocked
-                                                            ? 'bg-green-500/10 hover:bg-green-500/20 text-green-400'
-                                                            : 'bg-red-500/10 hover:bg-red-500/20 text-red-400'
+                                                            ? 'bg-green-600/20 hover:bg-green-600/30 text-green-400'
+                                                            : 'bg-red-600/20 hover:bg-red-600/30 text-red-400'
                                                             } disabled:opacity-50 disabled:cursor-not-allowed`}
                                                         title={user.isBlocked ? 'Unblock' : 'Block'}
                                                     >
@@ -347,7 +320,7 @@ const AdminDashboard: React.FC = () => {
                                                             setSelectedUser(user);
                                                             setShowResetModal(true);
                                                         }}
-                                                        className="p-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg transition"
+                                                        className="p-2 bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 rounded-lg transition"
                                                         title="Reset Password"
                                                     >
                                                         <Key className="w-4 h-4" />
@@ -355,7 +328,7 @@ const AdminDashboard: React.FC = () => {
                                                     <button
                                                         onClick={() => handleDeleteUser(user.id)}
                                                         disabled={user.id === currentUser?.id}
-                                                        className="p-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+                                                        className="p-2 bg-red-600/20 hover:bg-red-600/30 text-red-400 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
                                                         title="Delete User"
                                                     >
                                                         <Trash2 className="w-4 h-4" />
@@ -373,32 +346,28 @@ const AdminDashboard: React.FC = () => {
 
             {/* Add User Modal */}
             {showAddModal && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-                    <div className="bg-surface border border-white/10 rounded-2xl max-w-md w-full shadow-2xl transform transition-all animate-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="bg-surface rounded-2xl max-w-md w-full border border-white/10 shadow-2xl">
                         <div className="flex items-center justify-between p-6 border-b border-white/10">
-                            <div>
-                                <h2 className="text-2xl font-bold text-text">Add New User</h2>
-                                <p className="text-text-muted text-sm mt-1">Create a new account</p>
-                            </div>
+                            <h2 className="text-2xl font-bold text-text">Add New User</h2>
                             <button
                                 onClick={() => setShowAddModal(false)}
-                                className="p-2 hover:bg-white/10 rounded-lg transition text-text-muted hover:text-text"
+                                className="p-2 hover:bg-white/10 rounded-lg transition"
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-5 h-5 text-text-muted" />
                             </button>
                         </div>
-                        <form onSubmit={handleAddUser} className="p-6 space-y-5">
+                        <form onSubmit={handleAddUser} className="p-6 space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-text-muted mb-2">Username</label>
                                 <input
                                     type="text"
                                     value={newUsername}
                                     onChange={(e) => setNewUsername(e.target.value)}
-                                    className="w-full px-4 py-3 bg-white border border-white/10 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                                    className="w-full px-4 py-2 bg-background border border-white/10 rounded-lg text-text focus:outline-none focus:border-primary"
                                     required
                                     minLength={3}
                                     maxLength={30}
-                                    placeholder="Enter username"
                                 />
                             </div>
                             <div>
@@ -407,39 +376,33 @@ const AdminDashboard: React.FC = () => {
                                     type="password"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
-                                    className="w-full px-4 py-3 bg-white border border-white/10 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                                    className="w-full px-4 py-2 bg-background border border-white/10 rounded-lg text-text focus:outline-none focus:border-primary"
                                     required
                                     minLength={8}
-                                    placeholder="Enter password"
                                 />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-text-muted mb-2">Role</label>
-                                <div className="relative">
-                                    <select
-                                        value={newRole}
-                                        onChange={(e) => setNewRole(e.target.value as 'admin' | 'user')}
-                                        className="w-full px-4 py-3 bg-white border border-white/10 rounded-xl text-black focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all appearance-none"
-                                    >
-                                        <option value="user" className="bg-white text-black">User</option>
-                                        <option value="admin" className="bg-white text-black">Admin</option>
-                                    </select>
-                                    <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none text-text-muted">
-                                        <Shield className="w-4 h-4" />
-                                    </div>
-                                </div>
+                                <select
+                                    value={newRole}
+                                    onChange={(e) => setNewRole(e.target.value as 'admin' | 'user')}
+                                    className="w-full px-4 py-2 bg-background border border-white/10 rounded-lg text-text focus:outline-none focus:border-primary"
+                                >
+                                    <option value="user">User</option>
+                                    <option value="admin">Admin</option>
+                                </select>
                             </div>
                             <div className="flex gap-3 pt-4">
                                 <button
                                     type="button"
                                     onClick={() => setShowAddModal(false)}
-                                    className="flex-1 px-4 py-3 bg-white/5 hover:bg-white/10 text-text font-medium rounded-xl transition"
+                                    className="flex-1 px-4 py-2 bg-surface hover:bg-white/10 text-text rounded-lg transition"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-4 py-3 bg-primary hover:bg-blue-400 text-black font-bold rounded-xl transition transform hover:scale-[1.02]"
+                                    className="flex-1 px-4 py-2 bg-primary text-black font-bold rounded-lg transition hover:bg-blue-400"
                                 >
                                     Create User
                                 </button>
@@ -451,45 +414,34 @@ const AdminDashboard: React.FC = () => {
 
             {/* Reset Password Modal */}
             {showResetModal && selectedUser && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-200">
-                    <div className="bg-surface border border-white/10 rounded-2xl max-w-md w-full shadow-2xl transform transition-all animate-in zoom-in-95 duration-200">
+                <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <div className="bg-surface rounded-2xl max-w-md w-full border border-white/10 shadow-2xl">
                         <div className="flex items-center justify-between p-6 border-b border-white/10">
-                            <div>
-                                <h2 className="text-2xl font-bold text-text">Reset Password</h2>
-                                <p className="text-text-muted text-sm mt-1">Update user credentials</p>
-                            </div>
+                            <h2 className="text-2xl font-bold text-text">Reset Password</h2>
                             <button
                                 onClick={() => {
                                     setShowResetModal(false);
                                     setSelectedUser(null);
                                     setResetPassword('');
                                 }}
-                                className="p-2 hover:bg-white/10 rounded-lg transition text-text-muted hover:text-text"
+                                className="p-2 hover:bg-white/10 rounded-lg transition"
                             >
-                                <X className="w-5 h-5" />
+                                <X className="w-5 h-5 text-text-muted" />
                             </button>
                         </div>
-                        <form onSubmit={handleResetPassword} className="p-6 space-y-5">
-                            <div className="p-4 bg-primary/10 rounded-xl border border-primary/20 flex items-center gap-3">
-                                <div className="p-2 bg-primary/20 rounded-full">
-                                    <UserIcon className="w-5 h-5 text-primary" />
-                                </div>
-                                <div>
-                                    <p className="text-text-muted text-xs uppercase tracking-wider font-semibold">Resetting for</p>
-                                    <p className="text-text font-bold">{selectedUser.username}</p>
-                                </div>
-                            </div>
+                        <form onSubmit={handleResetPassword} className="p-6 space-y-4">
+                            <p className="text-text-muted">
+                                Reset password for <span className="text-text font-semibold">{selectedUser.username}</span>
+                            </p>
                             <div>
                                 <label className="block text-sm font-medium text-text-muted mb-2">New Password</label>
                                 <input
                                     type="password"
                                     value={resetPassword}
                                     onChange={(e) => setResetPassword(e.target.value)}
-                                    className="w-full px-4 py-3 bg-white border border-white/10 rounded-xl text-black placeholder-gray-500 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
+                                    className="w-full px-4 py-2 bg-background border border-white/10 rounded-lg text-text focus:outline-none focus:border-primary"
                                     required
                                     minLength={8}
-                                    placeholder="Enter new password"
-                                    autoFocus
                                 />
                             </div>
                             <div className="flex gap-3 pt-4">
@@ -500,13 +452,13 @@ const AdminDashboard: React.FC = () => {
                                         setSelectedUser(null);
                                         setResetPassword('');
                                     }}
-                                    className="flex-1 px-4 py-3 bg-white/5 hover:bg-white/10 text-text font-medium rounded-xl transition"
+                                    className="flex-1 px-4 py-2 bg-surface hover:bg-white/10 text-text rounded-lg transition"
                                 >
                                     Cancel
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-1 px-4 py-3 bg-primary hover:bg-blue-400 text-black font-bold rounded-xl transition transform hover:scale-[1.02]"
+                                    className="flex-1 px-4 py-2 bg-primary text-black font-bold rounded-lg transition hover:bg-blue-400"
                                 >
                                     Reset Password
                                 </button>
