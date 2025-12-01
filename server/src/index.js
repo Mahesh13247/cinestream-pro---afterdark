@@ -23,13 +23,17 @@ initDatabase();
 const initializeDefaultAdmin = async () => {
     try {
         const adminUsername = process.env.ADMIN_USERNAME || 'admin';
-        const adminPassword = process.env.ADMIN_PASSWORD || 'Admin@123456';
+        const adminPassword = process.env.ADMIN_PASSWORD;
+
+        if (!adminPassword) {
+            console.warn('⚠️  WARNING: ADMIN_PASSWORD is not set. Default admin user will NOT be created.');
+            return;
+        }
 
         const existingAdmin = await UserModel.findByUsername(adminUsername);
         if (!existingAdmin) {
             await UserModel.create(adminUsername, adminPassword, 'admin');
             console.log(`✓ Default admin user created: ${adminUsername}`);
-            console.log(`⚠️  IMPORTANT: Change the default password immediately!`);
         }
     } catch (error) {
         console.error('Error creating default admin:', error);
