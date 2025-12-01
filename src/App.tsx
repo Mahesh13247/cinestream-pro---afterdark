@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import AdminRoute from './components/AdminRoute';
 import Home from './pages/Home';
@@ -34,13 +35,14 @@ const queryClient = new QueryClient({
     },
 });
 
-// Simple wrapper to conditionally render Navbar
+// Simple wrapper to conditionally render Navbar and Footer
 const Layout = ({ children }: { children?: React.ReactNode }) => {
     return (
-        <>
+        <div className="flex flex-col min-h-screen">
             <Navbar />
-            <main>{children}</main>
-        </>
+            <main className="flex-grow">{children}</main>
+            <Footer />
+        </div>
     );
 };
 
