@@ -33,9 +33,30 @@ services:
         generateValue: true
     autoDeploy: false
 
-  # The Frontend (Optional - you already have it on GitHub Pages, but Render can host it too)
-  # - type: static
-  #   name: cinestream-frontend
-  #   env: static
-  #   buildCommand: npm install && npm run build
-  #   staticPublishPath: ./dist
+  # The Full Application (Frontend + Backend combined)
+  - type: web
+    name: cinestream-pro---afterdark
+    env: node
+    plan: free
+    buildCommand: npm install && cd server && npm install && cd .. && npm run build
+    startCommand: npm run start:all
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cinestream-database
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ADMIN_PASSWORD
+        value: maheshisagoodboy
+      - key: FRONTEND_URL
+        sync: false
+    autoDeploy: false
