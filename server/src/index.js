@@ -8,6 +8,7 @@ import { securityHeaders, apiLimiter, sanitizeInput } from './middleware/securit
 import { authenticate } from './middleware/auth.js';
 import authRoutes from './routes/auth.js';
 import adminRoutes from './routes/admin.js';
+import adultRoutes from '../routes/adult.js';
 
 // Load environment variables
 dotenv.config();
@@ -75,6 +76,7 @@ app.get('/health', (req, res) => {
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/adult', adultRoutes);
 
 // Protected route example (requires authentication)
 app.get('/api/protected', authenticate, (req, res) => {

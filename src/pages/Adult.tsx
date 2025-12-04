@@ -1,12 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { adultApi } from '../services/api';
 import { AdultVideo } from '../types';
-import { AlertOctagon, Lock, Search, Star, Eye, Clock, Filter, TrendingUp, X, Play } from 'lucide-react';
+import { AlertOctagon, Lock, Search, Star, Eye, Clock, Filter, TrendingUp, X, Play, Shield, Timer } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useInfiniteScroll } from '../hooks/useInfiniteScroll';
+import { useAdultSecurity } from '../contexts/AdultSecurityContext';
+import AdultPinModal from '../components/AdultPinModal';
 
 const Adult = () => {
-  const [isVerified, setIsVerified] = useState(false);
+  const navigate = useNavigate();
+  const {
+    hasAccess,
+    hasPin,
+    requiresSetup,
+    isLocked,
+    remainingAttempts,
+    idleTime,
+    verifyPin,
+    setPin,
+    revokeAccess,
+    resetIdleTimer
+  } = useAdultSecurity();
+
   const [videos, setVideos] = useState<AdultVideo[]>([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
@@ -17,7 +32,11 @@ const Adult = () => {
   const [heroVideo, setHeroVideo] = useState<AdultVideo | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<AdultVideo | null>(null);
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
-  const navigate = useNavigate();
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pinModalMode, setPinModalMode] = useState<'setup' | 'verify'>('verify');
+  const [showIdleWarning, setShowIdleWarning] = useState(false);
+
+  const IDLE_WARNING_THRESHOLD = 4 * 60 * 1000; // 4 minutes (warn 1 min before auto-lock)
 
   const categories = [
     { id: 'top-weekly', name: 'Top Weekly', icon: TrendingUp },
@@ -28,26 +47,42 @@ const Adult = () => {
     { id: 'jav', name: 'JAV', icon: TrendingUp },
   ];
 
-  // Check localStorage on mount
+  // Check access and show PIN modal if needed
   useEffect(() => {
-    const verified = localStorage.getItem('is18PlusConfirmed');
-    if (verified === 'true') {
-      setIsVerified(true);
+    if (!hasAccess) {
+      if (requiresSetup) {
+        setPinModalMode('setup');
+        setShowPinModal(true);
+      } else if (hasPin) {
+        setPinModalMode('verify');
+        setShowPinModal(true);
+      }
+    } else {
+      setShowPinModal(false);
       loadVideos(1, activeCategory, searchQuery);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Only run on mount
+  }, [hasAccess, hasPin, requiresSetup]);
+
+  // Monitor idle time and show warning
+  useEffect(() => {
+    if (hasAccess && idleTime >= IDLE_WARNING_THRESHOLD) {
+      setShowIdleWarning(true);
+    } else {
+      setShowIdleWarning(false);
+    }
+  }, [hasAccess, idleTime]);
 
   // Reload when category changes
   useEffect(() => {
-    if (isVerified) {
+    if (hasAccess) {
       setPage(1);
       setHasMore(true);
       setVideos([]);
       loadVideos(1, activeCategory, searchQuery);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeCategory, isVerified]); // Reload when category or verification status changes
+  }, [activeCategory, hasAccess]);
 
   const loadVideos = async (pageNum: number, order: string, query: string) => {
     try {
@@ -97,6 +132,7 @@ const Adult = () => {
   const handleVideoClick = (video: AdultVideo) => {
     setSelectedVideo(video);
     setIsPlayerOpen(true);
+    resetIdleTimer();
   };
 
   const closePlayer = () => {
@@ -104,14 +140,22 @@ const Adult = () => {
     setTimeout(() => setSelectedVideo(null), 300);
   };
 
-  const handleVerify = () => {
-    localStorage.setItem('is18PlusConfirmed', 'true');
-    setIsVerified(true);
-    loadVideos(1, activeCategory, searchQuery);
+  const handlePinSubmit = async (pin: string) => {
+    if (pinModalMode === 'setup') {
+      return await setPin(pin);
+    } else {
+      return await verifyPin(pin);
+    }
   };
 
-  const handleExit = () => {
+  const handleExitAdultSection = async () => {
+    await revokeAccess();
     navigate('/');
+  };
+
+  const handleStayActive = () => {
+    resetIdleTimer();
+    setShowIdleWarning(false);
   };
 
   // Get suggested videos (exclude current video) - show all available
@@ -120,44 +164,83 @@ const Adult = () => {
     return videos.filter(v => v.id !== selectedVideo.id);
   };
 
-  if (!isVerified) {
+  const suggestedVideos = getSuggestedVideos();
+
+  // Show PIN modal if no access
+  if (!hasAccess) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-black p-4">
-        <div className="max-w-md w-full glass-panel p-8 rounded-2xl border border-secondary/50 text-center space-y-6 animate-fade-in">
-          <div className="w-20 h-20 bg-secondary/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
-            <Lock className="w-10 h-10 text-secondary" />
-          </div>
-          <h1 className="text-3xl font-bold text-secondary">Restricted Access</h1>
-          <p className="text-gray-300">
-            The following content contains material of an adult nature and is intended for viewers 18 years of age or older.
-          </p>
-          <div className="bg-secondary/10 p-4 rounded-lg border border-secondary/20 flex gap-3 text-left">
-            <AlertOctagon className="text-secondary shrink-0" />
-            <span className="text-xs text-gray-400">By entering, you confirm you are at least 18 years old and consent to viewing sexually explicit content.</span>
-          </div>
-          <div className="flex flex-col gap-3">
-            <button
-              onClick={handleVerify}
-              className="w-full bg-secondary hover:bg-red-600 text-white font-bold py-3 rounded-lg transition-all transform hover:scale-105"
-            >
-              I am 18+ - Enter
-            </button>
-            <button
-              onClick={handleExit}
-              className="w-full bg-white/10 hover:bg-white/20 text-white font-medium py-3 rounded-lg transition-colors"
-            >
-              Exit to Safe Home
-            </button>
+      <>
+        <AdultPinModal
+          isOpen={showPinModal}
+          mode={pinModalMode}
+          onClose={() => navigate('/')}
+          onSubmit={handlePinSubmit}
+          isLocked={isLocked}
+          remainingAttempts={remainingAttempts}
+        />
+        <div className="min-h-screen flex flex-col items-center justify-center bg-black p-4">
+          <div className="max-w-md w-full glass-panel p-8 rounded-2xl border border-secondary/50 text-center space-y-6 animate-fade-in">
+            <div className="w-20 h-20 bg-secondary/20 rounded-full flex items-center justify-center mx-auto animate-pulse">
+              <Shield className="w-10 h-10 text-secondary" />
+            </div>
+            <h1 className="text-3xl font-bold text-secondary">Secure Access Required</h1>
+            <p className="text-gray-300">
+              {requiresSetup
+                ? 'Please set up a PIN to access adult content'
+                : 'Verifying your access...'
+              }
+            </p>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 
-  const suggestedVideos = getSuggestedVideos();
-
   return (
     <div className="min-h-screen bg-background pb-20">
+      {/* PIN Modal (for re-verification if needed) */}
+      <AdultPinModal
+        isOpen={showPinModal}
+        mode={pinModalMode}
+        onClose={() => navigate('/')}
+        onSubmit={handlePinSubmit}
+        isLocked={isLocked}
+        remainingAttempts={remainingAttempts}
+      />
+
+      {/* Idle Timeout Warning */}
+      {showIdleWarning && (
+        <div className="fixed top-20 left-4 z-50 animate-slide-down">
+          <div className="bg-orange-500/90 backdrop-blur-md text-white px-6 py-4 rounded-lg shadow-2xl border border-orange-400 flex items-center gap-4 max-w-md">
+            <Timer className="animate-pulse" size={24} />
+            <div className="flex-1">
+              <p className="font-bold">Auto-Lock Warning</p>
+              <p className="text-sm">Session will lock in {Math.ceil((5 * 60 * 1000 - idleTime) / 1000 / 60)} minute{Math.ceil((5 * 60 * 1000 - idleTime) / 1000 / 60) !== 1 ? 's' : ''}</p>
+            </div>
+            <button
+              onClick={handleStayActive}
+              className="bg-white text-orange-500 font-bold px-4 py-2 rounded-lg hover:bg-orange-50 transition-colors"
+            >
+              Stay Active
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Security Status Indicator */}
+      <div className="fixed top-20 right-4 z-40">
+        <div className="bg-surface/80 backdrop-blur-md border border-border rounded-lg px-4 py-2 flex items-center gap-2 text-sm">
+          <Shield size={16} className="text-green-400" />
+          <span className="text-text-muted">Secure Session</span>
+          <button
+            onClick={handleExitAdultSection}
+            className="ml-2 text-secondary hover:text-red-400 transition-colors"
+            title="Exit Adult Section"
+          >
+            <Lock size={16} />
+          </button>
+        </div>
+      </div>
       {/* Video Player Modal */}
       {isPlayerOpen && selectedVideo && (
         <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/95 p-4 overflow-y-auto animate-fade-in">
@@ -437,14 +520,15 @@ const Adult = () => {
         <div className="mt-12 py-8 border-t border-white/5 text-center text-xs text-text-muted space-y-4">
           <p>Compliance Notice: All adult content is provided via 3rd party public APIs. We do not host any files.</p>
           <p className="text-text-muted">Provider: Eporner API</p>
+          <p className="text-xs text-green-400 flex items-center justify-center gap-2">
+            <Shield size={14} />
+            <span>Protected by PIN Security</span>
+          </p>
           <button
-            onClick={() => {
-              localStorage.removeItem('is18PlusConfirmed');
-              setIsVerified(false);
-            }}
+            onClick={handleExitAdultSection}
             className="mt-2 text-secondary underline hover:text-red-400 transition-colors"
           >
-            Reset Age Gate
+            Exit Adult Section
           </button>
         </div>
       </div>
