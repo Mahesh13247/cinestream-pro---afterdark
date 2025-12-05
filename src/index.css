@@ -8,61 +8,62 @@ body {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    
+    scroll-behavior: smooth;
+
 }
 
 
 
 :root {
-  /* Light Mode Colors */
-  --color-background: #fff6ec;
-  --color-surface: #f3f4f6;
-  --color-surface-highlight: #e5e7eb;
-  --color-text: #ff3300;
-  --color-text-muted: #000000;
-  --color-text-inverse: #ffffff;
-  --color-primary: #B6F500;
-  --color-secondary: #FF0033;
+    /* Light Mode Colors */
+    --color-background: #fff6ec;
+    --color-surface: #f3f4f6;
+    --color-surface-highlight: #e5e7eb;
+    --color-text: #ff3300;
+    --color-text-muted: #000000;
+    --color-text-inverse: #ffffff;
+    --color-primary: #B6F500;
+    --color-secondary: #FF0033;
 
-  /* Light Mode Specific - Pop Colors */
-  --color-border: rgba(255, 215, 0, 0.4);
-  --color-border-hover: rgba(255, 69, 0, 0.6);
-  --color-overlay: rgba(255, 0, 128, 0.45);
-  --color-overlay-light: rgba(255, 165, 0, 0.2);
-  --color-card-bg: #ffffff;
-  --color-card-hover: linear-gradient(135deg, #fff5e6 0%, #ffe6f0 100%);
-  --color-shadow: rgba(255, 105, 180, 0.3);
-  --color-shadow-hover: rgba(255, 69, 0, 0.45);
-  --color-input-bg: linear-gradient(135deg, #fffacd 0%, #ffe4e1 100%);
-  --color-input-border: rgba(255, 140, 0, 0.5);
-  --color-hero-text: #ff1493;
-  --color-hero-text-muted: #ff6347;
+    /* Light Mode Specific - Pop Colors */
+    --color-border: rgba(255, 215, 0, 0.4);
+    --color-border-hover: rgba(255, 69, 0, 0.6);
+    --color-overlay: rgba(255, 0, 128, 0.45);
+    --color-overlay-light: rgba(255, 165, 0, 0.2);
+    --color-card-bg: #ffffff;
+    --color-card-hover: linear-gradient(135deg, #fff5e6 0%, #ffe6f0 100%);
+    --color-shadow: rgba(255, 105, 180, 0.3);
+    --color-shadow-hover: rgba(255, 69, 0, 0.45);
+    --color-input-bg: linear-gradient(135deg, #fffacd 0%, #ffe4e1 100%);
+    --color-input-border: rgba(255, 140, 0, 0.5);
+    --color-hero-text: #ff1493;
+    --color-hero-text-muted: #ff6347;
 }
 
 .dark {
-  /* Dark Mode Colors */
-  --color-background: #000000;
-  --color-surface: #121212;
-  --color-surface-highlight: #1E1E1E;
-  --color-text: #ff5d35;
-  --color-text-muted: #00ffd1;
-  --color-text-inverse: #111827;
-  --color-primary: #B6F500;
-  --color-secondary: #ff0000;
+    /* Dark Mode Colors */
+    --color-background: #000000;
+    --color-surface: #121212;
+    --color-surface-highlight: #1E1E1E;
+    --color-text: #ff5d35;
+    --color-text-muted: #00ffd1;
+    --color-text-inverse: #111827;
+    --color-primary: #B6F500;
+    --color-secondary: #ff0000;
 
-  /* Dark Mode Specific */
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-border-hover: rgba(0, 196, 255, 0.3);
-  --color-overlay: rgba(0, 0, 0, 0.6);
-  --color-overlay-light: rgba(0, 0, 0, 0.3);
-  --color-card-bg: #121212;
-  --color-card-hover: #1E1E1E;
-  --color-shadow: rgba(0, 0, 0, 0.3);
-  --color-shadow-hover: rgba(0, 196, 255, 0.2);
-  --color-input-bg: #1E1E1E;
-  --color-input-border: rgba(255, 255, 255, 0.1);
-  --color-hero-text: #B6F500;
-  --color-hero-text-muted: #00ffd1;
+    /* Dark Mode Specific */
+    --color-border: rgba(255, 255, 255, 0.1);
+    --color-border-hover: rgba(0, 196, 255, 0.3);
+    --color-overlay: rgba(0, 0, 0, 0.6);
+    --color-overlay-light: rgba(0, 0, 0, 0.3);
+    --color-card-bg: #121212;
+    --color-card-hover: #1E1E1E;
+    --color-shadow: rgba(0, 0, 0, 0.3);
+    --color-shadow-hover: rgba(0, 196, 255, 0.2);
+    --color-input-bg: #1E1E1E;
+    --color-input-border: rgba(255, 255, 255, 0.1);
+    --color-hero-text: #B6F500;
+    --color-hero-text-muted: #00ffd1;
 }
 
 

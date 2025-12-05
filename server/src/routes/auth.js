@@ -21,11 +21,11 @@ router.post('/login', loginLimiter, loginValidation, handleValidationErrors, asy
             });
         }
 
-        // Check if user is blocked
-        if (user.isBlocked) {
+        // Check if user is blocked (use database field name)
+        if (user.is_blocked === 1 || user.is_blocked === true) {
             return res.status(403).json({
                 success: false,
-                message: 'Your account has been blocked by the administrator'
+                message: 'Your account has been blocked. Please contact the administrator.'
             });
         }
 

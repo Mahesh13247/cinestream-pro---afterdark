@@ -20,10 +20,13 @@ router.get('/users', async (req, res) => {
         const users = await UserModel.findAll(limit, offset);
         const total = await UserModel.count();
 
+        // Sanitize users to convert snake_case to camelCase
+        const sanitizedUsers = users.map(user => UserModel.sanitize(user));
+
         res.json({
             success: true,
             data: {
-                users,
+                users: sanitizedUsers,
                 pagination: {
                     page,
                     limit,
@@ -61,7 +64,7 @@ router.post('/users', registerValidation, handleValidationErrors, async (req, re
         res.status(201).json({
             success: true,
             message: 'User created successfully',
-            data: newUser
+            data: UserModel.sanitize(newUser)
         });
     } catch (error) {
         console.error('Create user error:', error);

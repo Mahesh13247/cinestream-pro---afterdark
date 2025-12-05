@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
+import * as pgAdapter from './pg-adapter.js';
 
 dotenv.config();
 
@@ -11,6 +12,9 @@ const __dirname = path.dirname(__filename);
 // Database file path
 const DB_PATH = path.join(__dirname, '../../data/database.json');
 const DATA_DIR = path.join(__dirname, '../../data');
+
+// Check if we should use PostgreSQL
+export const isPostgres = !!process.env.DATABASE_URL;
 
 // Initialize database structure
 const initDB = {
@@ -50,14 +54,35 @@ export const writeDB = async (data) => {
 // Initialize database
 export const initDatabase = async () => {
   try {
-    await ensureDataDir();
-    const db = await readDB();
-    console.log('✓ Database initialized successfully');
-    return db;
+    if (isPostgres) {
+      // Initialize PostgreSQL
+      console.log('🔄 Initializing PostgreSQL database...');
+      pgAdapter.initPool();
+      const connected = await pgAdapter.testConnection();
+
+      if (!connected) {
+        console.error('⚠️  PostgreSQL connection failed, falling back to JSON storage');
+        // Fall back to JSON
+        await ensureDataDir();
+        const db = await readDB();
+        console.log('✓ Using JSON file storage (fallback)');
+        return db;
+      }
+
+      await pgAdapter.initializeTables();
+      console.log('✓ PostgreSQL database ready');
+      return null; // No JSON DB needed
+    } else {
+      // Use JSON file storage
+      await ensureDataDir();
+      const db = await readDB();
+      console.log('✓ Using JSON file storage (no DATABASE_URL found)');
+      return db;
+    }
   } catch (error) {
     console.error('✗ Database initialization failed:', error);
     throw error;
   }
 };
 
-export default { readDB, writeDB, initDatabase };
+export default { readDB, writeDB, initDatabase, isPostgres };
