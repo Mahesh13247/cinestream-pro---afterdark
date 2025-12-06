@@ -129,3 +129,21 @@ DEPLOYMENT.md
 PRODUCTION.md
 API_KEYS.md
 SETUP_GUIDE.md
+
+# Deployment guides and documentation (contains URLs, credentials, and deployment info)
+docs/deployment-guide.md
+docs/render-deployment-detailed.md
+docs/render-deployment-checklist.md
+docs/render-deployment-visual.md
+docs/RENDER_DEPLOYMENT_INDEX.md
+docs/FIX_LOCAL_BACKEND_ERROR.md
+DEPLOY_QUICK_REF.md
+
+# Important project files with sensitive information
+README.md
+AUTH_README.md
+START_SERVERS.md
+*_CREDENTIALS.md
+*_SECRETS.md
+PASSWORDS.md
+
