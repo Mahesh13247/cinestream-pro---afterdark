@@ -1,0 +1,34 @@
+services:
+  # Backend API Server
+  - type: web
+    name: cinestream-backend
+    runtime: node
+    region: oregon
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cinestream-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false
+      - key: ADMIN_USERNAME
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+    healthCheckPath: /health
+
+databases:
+  # PostgreSQL Database
+  - name: cinestream-db
+    databaseName: cinestream
+    plan: free
+    region: oregon

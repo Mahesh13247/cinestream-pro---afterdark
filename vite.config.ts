@@ -8,7 +8,6 @@ export default defineConfig(({ mode }) => {
     server: {
       port: 3000,
       host: '0.0.0.0',
-      base: "/cinestream-pro---afterdark",
     },
     plugins: [react()],
     define: {
