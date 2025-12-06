@@ -17,12 +17,14 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
 
-// Initialize database
-initDatabase();
-
-// Create default admin user if none exists
-const initializeDefaultAdmin = async () => {
+// Initialize database and create default admin user
+const initializeApp = async () => {
     try {
+        // Initialize database first
+        await initDatabase();
+        console.log('✓ Database initialization complete');
+
+        // Create default admin user if none exists
         const adminUsername = process.env.ADMIN_USERNAME || 'admin';
         const adminPassword = process.env.ADMIN_PASSWORD;
 
@@ -35,13 +37,16 @@ const initializeDefaultAdmin = async () => {
         if (!existingAdmin) {
             await UserModel.create(adminUsername, adminPassword, 'admin');
             console.log(`✓ Default admin user created: ${adminUsername}`);
+        } else {
+            console.log(`✓ Admin user already exists: ${adminUsername}`);
         }
     } catch (error) {
-        console.error('Error creating default admin:', error);
+        console.error('❌ Error during app initialization:', error);
     }
 };
 
-initializeDefaultAdmin();
+// Run initialization
+initializeApp();
 
 // Clean expired tokens every hour
 setInterval(async () => {
